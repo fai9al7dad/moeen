@@ -20,7 +20,7 @@ const SelectSurah = ({ navigation }) => {
       fetchSurahs();
     }
     return () => (mounted = false);
-  });
+  }, []);
 
   const renderSeperator = () => {
     return <Box borderWidth={0.5} borderColor="gray.300" />;
@@ -34,19 +34,17 @@ const SelectSurah = ({ navigation }) => {
     };
   };
   return (
-    <SafeAreaView>
-      <FlatList
-        contentInsetAdjustmentBehavior="automatic"
-        keyExtractor={(item) => item.id.toString()}
-        data={surahs}
-        renderItem={({ item }) => (
-          <RenderSurah item={item} navigation={navigation} />
-        )}
-        disableVirtualization
-        getItemLayout={getItemLayout}
-        ItemSeparatorComponent={renderSeperator}
-      />
-    </SafeAreaView>
+    <FlatList
+      contentInsetAdjustmentBehavior="automatic"
+      keyExtractor={(item) => item.id.toString()}
+      data={surahs}
+      renderItem={({ item }) => (
+        <RenderSurah item={item} navigation={navigation} />
+      )}
+      disableVirtualization
+      getItemLayout={getItemLayout}
+      ItemSeparatorComponent={renderSeperator}
+    />
   );
 };
 export default SelectSurah;

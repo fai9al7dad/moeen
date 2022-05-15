@@ -8,6 +8,11 @@ import SelectSurah from "./screens/SelectSurah";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const HomeStack = () => {
+  const fadeNavigation = ({ current }) => ({
+    cardStyle: {
+      opacity: current.progress,
+    },
+  });
   return (
     <Stack.Navigator
       screenOptions={{
@@ -24,14 +29,17 @@ const HomeStack = () => {
         component={SelectSurah}
         options={{
           headerTitle: "السور",
-          presentation: "modal",
+          animation: "fade",
+          // presentation: "modal",
+
           // headerTransparent: true,
           // headerBlurEffect: "regular",
           // headerBackTitle: "المصحف",
           headerStyle: {
             backgroundColor: "#fff8ed",
           },
-          headerLargeTitle: true,
+          headerBackTitle: "المصحف",
+          // headerLargeTitle: true,
         }}
       />
     </Stack.Navigator>
