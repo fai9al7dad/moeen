@@ -41,7 +41,7 @@
     "react-native-svg": "12.3.0",
     "react-native-web": "0.17.7",
     "react-native-webview": "11.18.1",
-    "recyclerlistview": "^3.0.5"
+    "recyclerlistview": "^3.2.0-beta.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

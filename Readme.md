@@ -6,20 +6,22 @@ mistakes and warnings = [E]
 
 ## select surah
 
-- [ ] replace flatlist with recylcerListView
+- [x] replace flatlist with recylcerListView -> optimized flatlist
 - [ ] replace api call with sql query
-- [ ] make large header title aligned right
+- [x] make large header title aligned right -> switched to normal screen view
 - [ ] show [E] colors. and count?
+- [ ] start index from current surah
 
 ## page header
 
-- [ ] show if [M] or [W] in page. and show count?
+- [x] show if [M] or [W] in page. and show count?
 
 ## quran reader
 
 - [ ] fix word highlighting bug from right of page
-- [ ] make font size responsive
+- [x] make font size responsive
 
 ## general
 
+- [ ] fix high ram usage leading to crashing
 - [ ] optimize scroll to index

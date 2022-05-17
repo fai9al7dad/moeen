@@ -1,12 +1,14 @@
-import React, { createContext, useCallback, useState } from "react";
+import React, { createContext, useCallback, useContext, useState } from "react";
 import { Box, Pressable, Text } from "native-base";
 import PageHeader from "./PageHeader";
 import SuraHeader from "../svg/SuraHeader";
 import Word from "./components/Word";
-const PageContext = createContext<any>(null);
+import { QuranDataContext } from "../../contexts/QuranDataContext";
+import { DataProvider } from "recyclerlistview";
+import { RFValue } from "../../utils/RFValue";
 
 const RenderPage: React.FC<any> = React.memo(
-  ({ data, width, height }) => {
+  ({ data, width, height, scrollFunc }) => {
     const [mistakesCount, setMistakesCount] = useState(
       data[0]?.mistakes ? data[0]?.mistakes : null
     );
@@ -32,6 +34,7 @@ const RenderPage: React.FC<any> = React.memo(
       <Box height={height} width={width}>
         <PageHeader
           data={data[0]}
+          scrollFunc={scrollFunc}
           mistakesCount={mistakesCount}
           warningsCount={warningsCount}
         />
@@ -39,16 +42,16 @@ const RenderPage: React.FC<any> = React.memo(
         <Box height={"88%"} justifyContent="center" alignItems={"center"}>
           <Text
             fontFamily={`p${data[0]?.pageNumber}`}
-            fontSize={"4.9em"}
-            lineHeight={47}
+            fontSize={RFValue(19)}
+            lineHeight={RFValue(40)}
             textAlign="center"
-            adjustsFontSizeToFit
           >
             {data.map((item, index) => {
               let curLineNum = data[index]?.lineNumber;
               // if last item this will return undefined
               let aftLineNum = data[index + 1]?.lineNumber;
               let lineChange = curLineNum !== aftLineNum;
+
               if (lineChange) {
                 if (item.charType === "end") {
                   return (
@@ -131,56 +134,37 @@ const RenderPage: React.FC<any> = React.memo(
     );
   },
   (p, n) => {
-    return p.data[0].pageID === n.data[0].pageID;
+    return p.data[0].pageNumber === n.data[0].pageNumber;
   }
 );
 export default RenderPage;
-// class RenderPage extends PureComponent {
-//   render() {
-//     const { type, data, width, height, showFooter } = this.props;
-//     // let rubNumber = (currentPage) => {
-//     //   let count = currentPage / 20;
-//     //   if (count <= 0.25) {
-//     //     return 1;
-//     //   } else if (count <= 0.5) {
-//     //     return 2;
-//     //   } else if (count <= 0.75) {
-//     //     return 3;
-//     //   } else if (count <= 1) {
-//     //     return 4;
-//     //   }
-//     // };
-//     // let filteredPages = [569];
+//  <Box height={height} width={width}>
+//         <PageHeader
+//           data={data[0]}
+//           scrollFunc={scrollFunc}
+//           mistakesCount={mistakesCount}
+//           warningsCount={warningsCount}
+//         />
 
-//     return (
-//       <Pressable
-//         height={height}
-//         width={width}
-//         // justifyContent="center"
-//         // alignItems={"center"}
-//         onLongPress={() => {
-//           showFooter(true);
-//         }}
-//       >
-//         <PageHeader data={data} />
 //         <Box height={"88%"} justifyContent="center" alignItems={"center"}>
 //           <Text
 //             fontFamily={`p${data[0]?.pageNumber}`}
-//             fontSize={24}
-//             lineHeight={47}
+//             fontSize={RFValue(19)}
+//             lineHeight={RFValue(40)}
 //             textAlign="center"
-//             fontWeight={900}
+
 //           >
 //             {data.map((item, index) => {
 //               let curLineNum = data[index]?.lineNumber;
 //               // if last item this will return undefined
 //               let aftLineNum = data[index + 1]?.lineNumber;
 //               let lineChange = curLineNum !== aftLineNum;
+
 //               if (lineChange) {
 //                 if (item.charType === "end") {
 //                   return (
 //                     <>
-//                       <Text fontSize={"25"} color="#865520">
+//                       <Text key={item.wordID} fontSize={"25"} color="#865520">
 //                         {item.text}
 //                       </Text>
 //                       {"\n"}
@@ -188,13 +172,12 @@ export default RenderPage;
 //                   );
 //                 }
 //                 if (item.isNewChapter) {
-//                   if (item.isBismillah) {
+//                   if (item.isBismillah && item.pageNumber !== 187) {
 //                     return (
 //                       <>
 //                         <Text
-//                           key={item.id}
+//                           key={item.wordID}
 //                           fontSize="2xl"
-//                           // bg={"red.100"}
 //                           textAlign="center"
 //                         >
 //                           <Box width={width * 0.3} height={5}></Box>
@@ -207,7 +190,10 @@ export default RenderPage;
 //                   }
 //                   return (
 //                     <>
-//                       <SuraHeader chapterCode={item.chapterCode} />
+//                       <SuraHeader
+//                         key={item.wordID}
+//                         chapterCode={item.chapterCode}
+//                       />
 //                       {"\n"}
 //                     </>
 //                   );
@@ -215,20 +201,23 @@ export default RenderPage;
 //                 return (
 //                   <>
 //                     <Word
-//                       key={item.id}
+//                       key={item.wordID}
 //                       text={item.text}
 //                       color={item.color}
-//                       id={item.id}
+//                       id={item.wordID}
+//                       incrementMistake={incrementMistake}
+//                       incrementWarning={incrementWarning}
+//                       decrementMistake={decrementMistake}
+//                       decrementWarning={decrementWarning}
 //                     />
 //                     {"\n"}
-//                     {/* <Text key={item.id}>{item.text}</Text> */}
 //                   </>
 //                 );
 //               }
 //               if (item.charType === "end") {
 //                 return (
 //                   <>
-//                     <Text color="#865520" fontSize={"25"}>
+//                     <Text key={item.wordID} color="#865520" fontSize={"25"}>
 //                       {item.text}
 //                     </Text>
 //                   </>
@@ -236,20 +225,14 @@ export default RenderPage;
 //               }
 //               return (
 //                 <Word
-//                   key={item.id}
+//                   key={item.wordID}
 //                   text={item.text}
 //                   color={item.color}
-//                   id={item.id}
+//                   id={item.wordID}
+//                   incrementMistake={incrementMistake}
+//                   incrementWarning={incrementWarning}
+//                   decrementWarning={decrementWarning}
+//                   decrementMistake={decrementMistake}
 //                 />
 //               );
 //             })}
-//           </Text>
-//         </Box>
-
-//         <PageFooter data={data} />
-//       </Pressable>
-//     );
-//   }
-// }
-
-// export default RenderPage;

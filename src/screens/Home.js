@@ -14,9 +14,10 @@ import { getQuran } from "../utils/sqlite/getQuran";
 const Home = ({ route, navigation }) => {
   const listRef = useRef(null);
   const { width, height } = Dimensions.get("window");
+  const [refreshList, setRefreshList] = useState(0);
   const [dataProvider, setDataProvider] = useState(
     new DataProvider((r1, r2) => {
-      return r1[0].id !== r2[0].wordID;
+      return r1[0].wordID !== r2[0].wordID;
     })
   );
 
@@ -39,16 +40,10 @@ const Home = ({ route, navigation }) => {
   useEffect(() => {
     const get = async () => {
       let quran = await getQuran();
-      setDataProvider(
-        new DataProvider(
-          (r1, r2) => {
-            return r1[0].id !== r2[0].wordID;
-          },
-          (index) => {
-            return quran[index][0]?.wordID.toString();
-          }
-        ).cloneWithRows(quran)
-      );
+      let data = new DataProvider((r1, r2) => {
+        return r1[0].wordID !== r2[0].wordID;
+      }).cloneWithRows(quran);
+      setDataProvider(data);
     };
     get();
   }, []);
@@ -66,7 +61,7 @@ const Home = ({ route, navigation }) => {
     listRef.current.scrollToIndex(index);
   };
 
-  const rowRenderer = (type, data) => {
+  function rowRenderer(type, data) {
     return (
       <RenderPage
         data={data}
@@ -74,9 +69,11 @@ const Home = ({ route, navigation }) => {
         scrollFunc={scrollFunc}
         height={height}
         navigation={navigation}
+        refreshList={refreshList}
+        setRefreshList={(val) => setRefreshList(val)}
       />
     );
-  };
+  }
 
   return (
     <Box flex={1}>
@@ -89,6 +86,7 @@ const Home = ({ route, navigation }) => {
         {dataProvider._data.length > 10 ? (
           <RecyclerListView
             // initialScrollIndex={5}
+
             ref={listRef}
             dataProvider={dataProvider}
             layoutProvider={layoutProvider}
@@ -101,7 +99,9 @@ const Home = ({ route, navigation }) => {
             scrollThrottle={16}
             showsHorizontalScrollIndicator={false}
             bounces={false}
-            disableRecycling
+            // onVisibleIndicesChanged={(i) => console.log(`i = ${i}`)}
+            extendedState={refreshList}
+            // disableRecycling
           />
         ) : null}
       </QuranDataContext.Provider>

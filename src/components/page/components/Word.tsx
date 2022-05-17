@@ -1,12 +1,8 @@
 import React, { SetStateAction, useContext, useState } from "react";
 import { Box, Text, Stagger } from "native-base";
-import * as SQLite from "expo-sqlite";
-import { mistakesColor, mistakeTypes } from "../../../assets/conts/mistakes";
+import { mistakesColor } from "../../../assets/conts/mistakes";
 import { selectionAsync } from "expo-haptics";
-import { getRowById } from "../../../utils/sqlite/getRowById";
 import { updateWordColor } from "../../../utils/sqlite/updateWordColor";
-import { UpdatedWordsContext } from "../../../contexts/UpdatedWordsContext";
-import { QuranDataContext } from "../../../contexts/QuranDataContext";
 
 interface props {
   color: string;
@@ -25,10 +21,9 @@ const Word: React.FC<props> = React.memo(
     incrementMistake,
     incrementWarning,
     decrementWarning,
-
     decrementMistake,
   }) => {
-    const [wordColor, setWordColor] = useState(color);
+    const [wordColor, setWordColor] = useState(color ? color : "black");
     const [showToolTip, setShowToolTip] = useState(false);
     const [showStagger, setShowStagger] = useState(false);
 
@@ -92,6 +87,7 @@ const Word: React.FC<props> = React.memo(
             initial={{
               opacity: 0,
               scale: 0,
+
               translateY: 10,
             }}
             animate={{
@@ -122,12 +118,13 @@ const Word: React.FC<props> = React.memo(
           >
             <Box
               position="absolute"
+              // right={}
               bg={
                 wordColor === mistakesColor.warning ? "amber.500" : "danger.500"
               }
               width={12}
               height={7}
-              zIndex="20"
+              // zIndex="2xl"
               justifyContent="center"
               alignItems="center"
               rounded="sm"
@@ -158,4 +155,4 @@ const Word: React.FC<props> = React.memo(
   }
 );
 
-export default React.memo(Word);
+export default Word;

@@ -19,6 +19,7 @@ import { QuranDataContext } from "../../contexts/QuranDataContext";
 const PageHeader = React.memo(
   ({ data, mistakesCount, warningsCount }: any) => {
     let textColor = "#ae8f74";
+
     const { scrollFunc, navigation } = useContext(QuranDataContext);
     let chapterCode = data.chapterCode;
     const [pageNumber, setPageNumber] = useState(1);

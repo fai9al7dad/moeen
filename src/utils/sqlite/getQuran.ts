@@ -22,9 +22,8 @@ export const getQuran = () => {
       // let curChunk = chunks[i];
       let sqlQuery = `
                 select 
-                page.id as pageID, page.pageNumber, page.rubNumber, page.hizbNumber,
-                word.text,word.lineNumber,word.isBismillah,word.isNewChapter,word.color,word.chapterCode,word.id as wordID,word.charType
-                
+                page.id as pageID, page.pageNumber, page.rubNumber, page.hizbNumber, page.juzNumber,
+                word.text,word.lineNumber, word.transliteration,word.isBismillah,word.isNewChapter,word.color,word.chapterCode,word.id as wordID,word.charType
                 from page
                 inner join line 
                 on line.pageID = page.id
