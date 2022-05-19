@@ -1,9 +1,9 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Home from "./screens/Home";
 import { RootStackParamList } from "./assets/types";
 import SelectSurah from "./screens/SelectSurah";
+import Quran from "./screens/Quran";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -20,8 +20,8 @@ const HomeStack = () => {
       }}
     >
       <Stack.Screen
-        name="Home"
-        component={Home}
+        name="Quran"
+        component={Quran}
         options={{ headerShown: false }}
       />
       <Stack.Screen

@@ -24,6 +24,6 @@ export interface Quran {
 }
 
 export type RootStackParamList = {
-  Home: undefined;
+  Quran: undefined;
   SelectSurah: undefined;
 };

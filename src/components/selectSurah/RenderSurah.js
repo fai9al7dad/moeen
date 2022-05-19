@@ -12,7 +12,7 @@ const RenderSurah = React.memo(
         justifyContent={"space-between"}
         p={4}
         onPress={() =>
-          navigation.navigate("Home", { pageNumber: item.pages[0] - 1 })
+          navigation.navigate("Quran", { pageNumber: item.pages[0] - 1 })
         }
         key={item.id}
       >

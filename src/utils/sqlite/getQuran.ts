@@ -4,6 +4,11 @@ import { useState } from "react";
 import * as SQLite from "expo-sqlite";
 
 export const getQuran = () => {
+  // const PAGE_SIZE = 1; // size of one page in the UI
+  // const PAGE_BUFFER = 10; // extra rows to load on either side
+  // const window = PAGE_SIZE + 2 * PAGE_BUFFER;
+  // const startIx = parseInt(scrollIndex) - PAGE_BUFFER;
+
   return new Promise((resolve, reject) => {
     const initializePagesArray = () => {
       let pages: any = [];

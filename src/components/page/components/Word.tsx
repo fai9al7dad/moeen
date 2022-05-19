@@ -1,40 +1,29 @@
-import React, { SetStateAction, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Box, Text, Stagger } from "native-base";
 import { mistakesColor } from "../../../assets/conts/mistakes";
 import { selectionAsync } from "expo-haptics";
 import { updateWordColor } from "../../../utils/sqlite/updateWordColor";
+import { QuranDataContext } from "../../../contexts/QuranDataContext";
+import { getRowById } from "../../../utils/sqlite/getRowById";
+import quran from "../../../stores/Quran";
 
 interface props {
   color: string;
   text: string;
   id: number;
-  incrementMistake: () => void;
-  incrementWarning: () => void;
-  decrementMistake: () => void;
-  decrementWarning: () => void;
+  index: number;
+  pageNumber: number;
 }
 const Word: React.FC<props> = React.memo(
-  ({
-    color,
-    text,
-    id,
-    incrementMistake,
-    incrementWarning,
-    decrementWarning,
-    decrementMistake,
-  }) => {
+  ({ color, text, id, index, pageNumber }) => {
     const [wordColor, setWordColor] = useState(color ? color : "black");
     const [showToolTip, setShowToolTip] = useState(false);
     const [showStagger, setShowStagger] = useState(false);
 
     const highlightWord = async (wordID: number) => {
       // haptics feedback
-      selectionAsync();
 
-      // const word = await getRowById("word", wordID);
-      // setTimeout(() => {
-      //   setRefreshCounter(refreshCounter + 1);
-      // }, 2000);
+      selectionAsync();
       if (wordColor !== mistakesColor.mistake) {
         // show stagger is required because initily stagger should be null to not mess up text layout
         setShowStagger(true);
@@ -50,33 +39,25 @@ const Word: React.FC<props> = React.memo(
       switch (wordColor) {
         case mistakesColor.default:
           newColor = mistakesColor.warning;
+          quran.updateMistakesCounter(pageNumber, "warning", wordID, newColor);
+
           break;
         case mistakesColor.warning:
           newColor = mistakesColor.mistake;
+          quran.updateMistakesCounter(pageNumber, "mistake", wordID, newColor);
+
           break;
         case mistakesColor.mistake:
           newColor = mistakesColor.default;
+          quran.updateMistakesCounter(pageNumber, "revert", wordID, newColor);
+
           break;
       }
       setWordColor(newColor);
-
-      updateWordColor(newColor, wordID);
-      if (newColor === mistakesColor.warning) {
-        incrementWarning();
-      }
-      if (newColor === mistakesColor.mistake) {
-        decrementWarning();
-        incrementMistake();
-      }
-      if (newColor === mistakesColor.default) {
-        decrementMistake();
-      }
-      // setRefreshCounter(refreshCounter + 1);
     };
 
     return (
       <Text
-        // onPress={() => highlightWord(id)}
         onPress={() => highlightWord(id)}
         color={wordColor}
         suppressHighlighting
@@ -118,13 +99,11 @@ const Word: React.FC<props> = React.memo(
           >
             <Box
               position="absolute"
-              // right={}
               bg={
                 wordColor === mistakesColor.warning ? "amber.500" : "danger.500"
               }
               width={12}
               height={7}
-              // zIndex="2xl"
               justifyContent="center"
               alignItems="center"
               rounded="sm"

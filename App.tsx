@@ -15,6 +15,8 @@ axios.defaults.headers.post["Accept"] = "application/json";
 axios.defaults.withCredentials = true;
 
 import { I18nManager } from "react-native";
+import { Provider } from "mobx-react";
+import quran from "./src/stores/Quran";
 I18nManager.forceRTL(true);
 I18nManager.allowRTL(true);
 export default function App() {
@@ -72,9 +74,11 @@ export default function App() {
 
   return (
     <NativeBaseProvider theme={theme}>
-      <Box onLayout={onLayoutRootView} flex={1}>
-        <Routes />
-      </Box>
+      <Provider quran={quran}>
+        <Box onLayout={onLayoutRootView} flex={1}>
+          <Routes />
+        </Box>
+      </Provider>
     </NativeBaseProvider>
   );
 }

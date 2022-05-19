@@ -24,4 +24,5 @@ mistakes and warnings = [E]
 ## general
 
 - [ ] fix high ram usage leading to crashing
-- [ ] optimize scroll to index
+- [x] optimize scroll to index
+- [ ] fix ts warnings
