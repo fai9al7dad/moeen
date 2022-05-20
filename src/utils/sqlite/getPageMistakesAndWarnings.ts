@@ -1,9 +1,9 @@
+import { openDatabase } from "expo-sqlite";
 import { mistakesColor } from "./../../assets/conts/mistakes";
-import * as SQLite from "expo-sqlite";
 
 export const getPageMistakesAndWarnings = (wordColor: string) => {
   return new Promise((resolve, reject) => {
-    const db = SQLite.openDatabase("quran.db");
+    const db = openDatabase("quran.db");
     let type;
     if (wordColor === mistakesColor.mistake) {
       type = "mistakes";

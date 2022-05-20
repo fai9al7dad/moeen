@@ -29,7 +29,6 @@ const HomeStack = () => {
         component={SelectSurah}
         options={{
           headerTitle: "السور",
-          // animation: "fade",
           // presentation: "modal",
 
           // headerTransparent: true,

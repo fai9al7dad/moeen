@@ -1,7 +1,7 @@
 import { mistakesColor } from "./../../assets/conts/mistakes";
 import { getPageMistakesAndWarnings } from "./getPageMistakesAndWarnings";
 import { useState } from "react";
-import * as SQLite from "expo-sqlite";
+import { openDatabase } from "expo-sqlite";
 
 export const getQuran = () => {
   // const PAGE_SIZE = 1; // size of one page in the UI
@@ -21,7 +21,7 @@ export const getQuran = () => {
     };
     let pages = initializePagesArray();
 
-    const db = SQLite.openDatabase("quran.db");
+    const db = openDatabase("quran.db");
     db.readTransaction(async (tx) => {
       // for (let i = 0; i < chunks.length; i++) {
       // let curChunk = chunks[i];

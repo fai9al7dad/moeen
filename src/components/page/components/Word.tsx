@@ -39,17 +39,35 @@ const Word: React.FC<props> = React.memo(
       switch (wordColor) {
         case mistakesColor.default:
           newColor = mistakesColor.warning;
-          quran.updateMistakesCounter(pageNumber, "warning", wordID, newColor);
+          quran.updateMistakesCounter(
+            pageNumber,
+            "warning",
+            wordID,
+            index,
+            newColor
+          );
 
           break;
         case mistakesColor.warning:
           newColor = mistakesColor.mistake;
-          quran.updateMistakesCounter(pageNumber, "mistake", wordID, newColor);
+          quran.updateMistakesCounter(
+            pageNumber,
+            "mistake",
+            wordID,
+            index,
+            newColor
+          );
 
           break;
         case mistakesColor.mistake:
           newColor = mistakesColor.default;
-          quran.updateMistakesCounter(pageNumber, "revert", wordID, newColor);
+          quran.updateMistakesCounter(
+            pageNumber,
+            "revert",
+            wordID,
+            index,
+            newColor
+          );
 
           break;
       }

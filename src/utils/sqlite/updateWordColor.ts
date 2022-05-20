@@ -1,7 +1,7 @@
-import * as SQLite from "expo-sqlite";
+import { openDatabase } from "expo-sqlite";
 
 export const updateWordColor = (wordColor: string, wordID: number) => {
-  const db = SQLite.openDatabase("quran.db");
+  const db = openDatabase("quran.db");
 
   db.transaction(async (tx) => {
     let updateWordColor = `UPDATE word set color = ? where id = ?`;

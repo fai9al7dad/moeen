@@ -7,9 +7,9 @@ mistakes and warnings = [E]
 ## select surah
 
 - [x] replace flatlist with recylcerListView -> optimized flatlist
-- [ ] replace api call with sql query
+- [x] replace api call with sql query -> replaced with json file
 - [x] make large header title aligned right -> switched to normal screen view
-- [ ] show [E] colors. and count?
+- [x] show [E] colors. and count?
 - [ ] start index from current surah
 
 ## page header
@@ -20,6 +20,7 @@ mistakes and warnings = [E]
 
 - [ ] fix word highlighting bug from right of page
 - [x] make font size responsive
+- [ ] start index from last stopped place
 
 ## general
 
