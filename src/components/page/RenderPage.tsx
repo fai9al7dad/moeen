@@ -1,9 +1,6 @@
 import React from "react";
-import { Box, Text } from "native-base";
+import { Box } from "native-base";
 import PageHeader from "./PageHeader";
-import SuraHeader from "../svg/SuraHeader";
-import Word from "./components/Word";
-import { RFValue } from "../../utils/RFValue";
 import RenderWords from "./components/RenderWords";
 
 const RenderPage: React.FC<any> = React.memo(({ data, width, height }) => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, FlatList, Pressable, Text } from "native-base";
+import { Box, Divider, FlatList, Pressable, Skeleton, Text } from "native-base";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RenderSurah from "../components/selectSurah/RenderSurah";
 import SURAHS from "../assets/json/SURAHS.json";
@@ -46,30 +46,59 @@ const SelectSurah = ({ navigation }) => {
       index,
     };
   };
+  let cards = [];
+  for (let i = 0; i < 15; i++) {
+    cards[i] = LoadingSkeleton;
+  }
+  if (!finished) {
+    return (
+      <>
+        {cards.map((item, index) => {
+          return <LoadingSkeleton key={index} />;
+        })}
+      </>
+    );
+  }
   return (
     <Box>
-      {finished ? (
-        <FlatList
-          contentInsetAdjustmentBehavior="automatic"
-          keyExtractor={(item) => item.id.toString()}
-          data={SURAHS.chapters}
-          renderItem={({ item }) => (
-            <RenderSurah item={item} navigation={navigation} />
-          )}
-          disableVirtualization
-          getItemLayout={getItemLayout}
-          ItemSeparatorComponent={renderSeperator}
-        />
-      ) : (
-        <Box
-          height={height * 0.8}
-          justifyContent="center"
-          alignItems={"center"}
-        >
-          <ActivityIndicator />
-        </Box>
-      )}
+      <FlatList
+        contentInsetAdjustmentBehavior="automatic"
+        keyExtractor={(item) => item.id.toString()}
+        data={SURAHS.chapters}
+        renderItem={({ item }) => (
+          <RenderSurah item={item} navigation={navigation} />
+        )}
+        disableVirtualization
+        getItemLayout={getItemLayout}
+        ItemSeparatorComponent={renderSeperator}
+      />
     </Box>
   );
 };
 export default SelectSurah;
+
+const LoadingSkeleton = () => {
+  return (
+    <Box
+      flexDirection={"row"}
+      alignItems="center"
+      justifyContent={"space-between"}
+      px={2}
+      mt={2}
+    >
+      <Box flexDirection="row" alignItems="center">
+        <Box>
+          <Skeleton width={"5"} height={"5"} mr={5} rounded="full" mt={5} />
+        </Box>
+        <Box width={"70%"}>
+          <Skeleton width={"50%"} height={"5"} rounded="lg" mt={5} />
+          <Skeleton width={"80%"} height={"3"} rounded="lg" mt={5} />
+        </Box>
+        <Box width={"20%"} alignItems="flex-end" pr={5}>
+          <Skeleton width={"80%"} height={"5"} rounded="lg" mt={5} />
+          <Skeleton width={"100%"} height={"5"} rounded="lg" mt={5} />
+        </Box>
+      </Box>
+    </Box>
+  );
+};

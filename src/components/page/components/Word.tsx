@@ -13,9 +13,10 @@ interface props {
   id: number;
   index: number;
   pageNumber: number;
+  isStartOfLine: boolean;
 }
 const Word: React.FC<props> = React.memo(
-  ({ color, text, id, index, pageNumber }) => {
+  ({ color, text, id, index, pageNumber, isStartOfLine }) => {
     const [wordColor, setWordColor] = useState(color ? color : "black");
     const [showToolTip, setShowToolTip] = useState(false);
     const [showStagger, setShowStagger] = useState(false);
@@ -75,11 +76,14 @@ const Word: React.FC<props> = React.memo(
     };
 
     return (
-      <Text
-        onPress={() => highlightWord(id)}
-        color={wordColor}
-        suppressHighlighting
-      >
+      <>
+        <Text
+          onPress={() => highlightWord(id)}
+          color={wordColor}
+          suppressHighlighting
+        >
+          {text}
+        </Text>
         {showStagger ? (
           <Stagger
             visible={showToolTip}
@@ -91,6 +95,7 @@ const Word: React.FC<props> = React.memo(
             }}
             animate={{
               translateY: 0,
+              translateX: isStartOfLine ? 40 : 0,
               scale: 1,
               opacity: 1,
               transition: {
@@ -145,9 +150,7 @@ const Word: React.FC<props> = React.memo(
             </Box>
           </Stagger>
         ) : null}
-
-        {text}
-      </Text>
+      </>
     );
   }
 );

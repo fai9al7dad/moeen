@@ -18,7 +18,7 @@ mistakes and warnings = [E]
 
 ## quran reader
 
-- [ ] fix word highlighting bug from right of page
+- [x] fix word highlighting bug from right of page
 - [x] make font size responsive
 - [ ] start index from last stopped place
 
