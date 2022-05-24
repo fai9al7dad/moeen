@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import SelectPageNumber from "./SelectPageNumber";
 import { Entypo } from "@expo/vector-icons";
 import RenderMistakesAndWarnings from "./components/RenderMistakesAndWarnings";
-
+import { Ionicons } from "@expo/vector-icons";
 const PageHeader = React.memo(
   ({ data }: any) => {
     const navigation = useNavigation();
@@ -22,6 +22,17 @@ const PageHeader = React.memo(
           // maxHeight="7"
         >
           <HStack flex={1} justifyContent="flex-start" alignItems={"center"}>
+            <Pressable
+              mr={2}
+              rounded="lg"
+              onPress={() => navigation.navigate("SelectDuo")}
+            >
+              <Ionicons
+                name="ios-people-circle-sharp"
+                size={24}
+                color="#059669"
+              />
+            </Pressable>
             <Pressable onPress={() => navigation.navigate("SelectSurah")}>
               <Text fontSize={"xl"} fontFamily="surahname" color={textColor}>
                 {data[0].chapterCode}surah

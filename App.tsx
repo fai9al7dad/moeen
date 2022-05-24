@@ -1,47 +1,59 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Box, extendTheme, NativeBaseProvider, Text } from "native-base";
+import {
+  Box,
+  Button,
+  extendTheme,
+  NativeBaseProvider,
+  useToast,
+} from "native-base";
 import Routes from "./src/Routes";
 import { fonts } from "./src/utils/allFontsGlyps";
 import { fontCon } from "./src/utils/fontConfigNative";
 import * as SplashScreen from "expo-splash-screen";
-import * as Font from "expo-font";
-import { Asset } from "expo-asset";
-import * as FileSystem from "expo-file-system";
-import * as SQLite from "expo-sqlite";
-
+import { QueryClient, QueryClientProvider } from "react-query";
 import axios from "axios";
-axios.defaults.headers.post["Content-Type"] = "application/json";
-axios.defaults.headers.post["Accept"] = "application/json";
-axios.defaults.withCredentials = true;
-
-import { I18nManager } from "react-native";
+import { I18nManager, View, Text, Dimensions } from "react-native";
 import { Provider } from "mobx-react";
 import quran from "./src/stores/Quran";
+import { openQuranDB } from "./src/utils/sqlite/quranDB";
+import { loadAsync } from "expo-font";
+import { UserContext } from "./src/components/providers";
+import UserProvider from "./src/components/providers/UserProvider";
 I18nManager.forceRTL(true);
 I18nManager.allowRTL(true);
-export default function App() {
+const App = React.memo(() => {
+  axios.defaults.headers.post["Content-Type"] = "application/json";
+  axios.defaults.headers.post["Accept"] = "application/json";
+  axios.defaults.withCredentials = true;
+  axios.defaults.baseURL = "http://192.168.1.51:8000";
   // let [fontsLoaded] = useFonts(fonts);
-
+  const { width, height } = Dimensions.get("window");
   const [appIsReady, setAppIsReady] = useState(false);
-
   const theme = extendTheme({
     fontConfig: fontCon,
   });
-  useEffect(() => {
-    async function prepare() {
-      try {
-        // Keep the splash screen visible while we fetch resources
-        await SplashScreen.preventAutoHideAsync();
-        await Font.loadAsync(fonts);
-      } catch (e) {
-        console.warn("e", e);
-      } finally {
-        // Tell the application to render
-        setAppIsReady(true);
-      }
-    }
 
-    prepare();
+  useEffect(() => {
+    let mounted = true;
+    if (mounted) {
+      async function prepare() {
+        try {
+          // Keep the splash screen visible while we fetch resources
+          await SplashScreen.preventAutoHideAsync();
+          await openQuranDB();
+          await loadAsync(fonts);
+        } catch (e) {
+          console.warn("e", e);
+        } finally {
+          // Tell the application to render
+          setAppIsReady(true);
+        }
+      }
+      prepare();
+    }
+    return () => {
+      mounted = false;
+    };
   }, []);
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
@@ -50,35 +62,32 @@ export default function App() {
   }, [appIsReady]);
 
   if (!appIsReady) {
-    return null;
+    return (
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+        }}
+      >
+        <Text>loading Fonts... {appIsReady}</Text>
+      </View>
+    );
   }
-
-  // causes disk io error
-  // async function openDatabase() {
-  //   if (
-  //     !(await FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite"))
-  //       .exists
-  //   ) {
-  //     await FileSystem.makeDirectoryAsync(
-  //       FileSystem.documentDirectory + "SQLite"
-  //     );
-  //   }
-  //   await FileSystem.downloadAsync(
-  //     Asset.fromModule(require("./src/assets/db/quran.db")).uri,
-  //     FileSystem.documentDirectory + "SQLite/quran.db"
-  //   );
-  //   return SQLite.openDatabase("quran.db");
-  // }
-
-  // openDatabase();
-
+  const queryClient = new QueryClient();
   return (
     <NativeBaseProvider theme={theme}>
-      <Provider quran={quran}>
-        <Box onLayout={onLayoutRootView} flex={1}>
-          <Routes />
-        </Box>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <UserProvider>
+          <Provider quran={quran}>
+            <Box onLayout={onLayoutRootView} flex={1} position="relative">
+              <Routes />
+            </Box>
+          </Provider>
+        </UserProvider>
+      </QueryClientProvider>
     </NativeBaseProvider>
   );
-}
+});
+
+export default App;

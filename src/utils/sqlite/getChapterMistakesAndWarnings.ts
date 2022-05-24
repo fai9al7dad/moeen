@@ -1,18 +1,19 @@
 import { mistakesColor } from "./../../assets/conts/mistakes";
-import { openDatabase } from "expo-sqlite";
+import { openQuranDB } from "./quranDB";
 
 export const getChapterMistakesAndWarnings = (
   wordColor: string,
-  chapterCode
+  chapterCode: string
 ) => {
-  return new Promise((resolve, reject) => {
-    const db = openDatabase("quran.db");
+  return new Promise(async (resolve, reject) => {
     let type;
     if (wordColor === mistakesColor.mistake) {
       type = "mistakes";
     } else {
       type = "warnings";
     }
+    const db = await openQuranDB();
+
     db.transaction((tx) => {
       let query = `
                 select count(*) as ${type} from word
@@ -26,9 +27,10 @@ export const getChapterMistakesAndWarnings = (
           resolve(data[0]);
           // console.log("finished query");
         },
-        (t: any, e: any) => {
+        (t: any, e: any): any => {
+          console.log("error from chapter E", e);
+
           reject(undefined);
-          throw new Error(e);
         }
       );
     });

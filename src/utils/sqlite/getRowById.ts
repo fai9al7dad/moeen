@@ -1,8 +1,10 @@
+import { openQuranDB } from "./quranDB";
 import { openDatabase } from "expo-sqlite";
 
 export const getRowById = (table: string, wordID: number) => {
-  return new Promise((resolve, reject) => {
-    const db = openDatabase("quran.db");
+  return new Promise(async (resolve, reject) => {
+    const db = await openQuranDB();
+
     db.transaction((tx) => {
       let query = `SELECT * FROM ${table} where id = ?`;
       tx.executeSql(

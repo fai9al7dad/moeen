@@ -1,7 +1,7 @@
 import { mistakesColor } from "./../../assets/conts/mistakes";
 import { getPageMistakesAndWarnings } from "./getPageMistakesAndWarnings";
-import { useState } from "react";
-import { openDatabase } from "expo-sqlite";
+
+import { openQuranDB } from "./quranDB";
 
 export const getQuran = () => {
   // const PAGE_SIZE = 1; // size of one page in the UI
@@ -9,7 +9,7 @@ export const getQuran = () => {
   // const window = PAGE_SIZE + 2 * PAGE_BUFFER;
   // const startIx = parseInt(scrollIndex) - PAGE_BUFFER;
 
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const initializePagesArray = () => {
       let pages: any = [];
       // initialze lines
@@ -20,15 +20,14 @@ export const getQuran = () => {
       return pages;
     };
     let pages = initializePagesArray();
-
-    const db = openDatabase("quran.db");
+    const db = await openQuranDB();
     db.readTransaction(async (tx) => {
       // for (let i = 0; i < chunks.length; i++) {
       // let curChunk = chunks[i];
       let sqlQuery = `
                 select 
                 page.id as pageID, page.pageNumber, page.rubNumber, page.hizbNumber, page.juzNumber,
-                word.text,word.lineNumber, word.transliteration,word.isBismillah,word.isNewChapter,word.color,word.chapterCode,word.id as wordID,word.charType
+                word.text,word.lineNumber, word.transliteration,word.isBismillah,word.isNewChapter,word.color,word.chapterCode,word.id as wordID,word.charType, word.verseNumber
                 from page
                 inner join line 
                 on line.pageID = page.id
@@ -64,9 +63,8 @@ export const getQuran = () => {
           resolve(pages);
         },
         (t: any, e: any): any => {
+          console.log("error from get quran", e);
           reject(e);
-
-          console.log(e);
         }
       );
     });
