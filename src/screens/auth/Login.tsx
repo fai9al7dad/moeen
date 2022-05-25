@@ -19,6 +19,8 @@ import React, { useState } from "react";
 import { useContext } from "react";
 import { Controller, useController, useForm } from "react-hook-form";
 import { Dimensions } from "react-native";
+import ActionButton from "../../components/general/ActionButton";
+import { CustomInput } from "../../components/general/CustomInput";
 import ToastAlert from "../../components/general/ToastAlert";
 import { UserContext } from "../../components/providers";
 interface errorInterface {
@@ -27,42 +29,7 @@ interface errorInterface {
   show: boolean;
   type: "error" | "success";
 }
-const CustomInput = ({ name, label, type = "text", control }) => {
-  return (
-    <>
-      <Controller
-        control={control}
-        name={name}
-        rules={{ required: true }}
-        render={({ field: { value, onChange } }) => {
-          return (
-            <FormControl>
-              {/* <FormControl.Label>
-          <Text color="blueGray.500" fontFamily={"montserrat"}>
-            {label}
-          </Text>
-        </FormControl.Label> */}
-              <Input
-                value={value}
-                onChangeText={onChange}
-                py={5}
-                autoCapitalize="none"
-                placeholder={label}
-                textAlign={"right"}
-                fontSize="lg"
-                backgroundColor="blueGray.100"
-                borderWidth={1}
-                borderColor="blueGray.200"
-                rounded={"lg"}
-                type={type}
-              />
-            </FormControl>
-          );
-        }}
-      />
-    </>
-  );
-};
+
 const Login = ({ navigation }) => {
   const { width, height } = Dimensions.get("window");
   const [toast, setToast] = useState<errorInterface | null>(null);
@@ -159,23 +126,8 @@ const Login = ({ navigation }) => {
                 كلمة المرور مطلوبه
               </Text>
             )}
-            <Button
-              onPress={handleSubmit(onSubmit)}
-              mt="2"
-              py="4"
-              shadow={"3"}
-              backgroundColor="tertiary.500"
-              rounded={"lg"}
-            >
-              <Text
-                color="white"
-                fontFamily={"montserrat-bold"}
-                textAlign="center"
-                fontSize={"lg"}
-              >
-                دخول
-              </Text>
-            </Button>
+            <ActionButton text="ادخل" onPress={handleSubmit(onSubmit)} />
+
             <Pressable onPress={() => navigation.navigate("Register")}>
               <Text
                 fontSize={"sm"}

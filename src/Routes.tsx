@@ -7,14 +7,9 @@ import Quran from "./screens/Quran";
 import Register from "./screens/auth/Register";
 import Login from "./screens/auth/Login";
 
-import * as SecureStore from "expo-secure-store";
-import { useContext } from "react";
-import { UserContext } from "./components/providers";
-import { useEffect } from "react";
-import { useState } from "react";
-import { Center, Spinner } from "native-base";
-import UserProvider from "./components/providers/UserProvider";
-import SelectDuo from "./screens/SelectDuo";
+import { SelectDuo } from "./screens/duo/SelectDuo";
+import SearchDuo from "./screens/duo/SearchDuo";
+import ViewWirds from "./screens/duo/ViewWirds";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -67,11 +62,39 @@ const HomeStack = () => {
         component={SelectDuo}
       />
       <Stack.Screen
+        options={{
+          contentStyle: { backgroundColor: "#fff8ed" },
+          headerStyle: { backgroundColor: "#fff8ed" },
+          headerBackTitle: "الثنائيات",
+          headerTitleStyle: { fontFamily: "montserrat" },
+          headerTitle: "الأوراد",
+          headerTintColor: "#047857",
+          headerBackTitleStyle: { fontFamily: "montserrat" },
+          // headerShown: false
+        }}
+        name="ViewWirds"
+        component={ViewWirds}
+      />
+      <Stack.Screen
+        options={{
+          contentStyle: { backgroundColor: "#fff8ed" },
+          headerStyle: { backgroundColor: "#fff8ed" },
+          headerBackTitle: "الثنائيات",
+          headerTitleStyle: { fontFamily: "montserrat" },
+          headerTitle: "ابحث",
+          headerTintColor: "#047857",
+          headerBackTitleStyle: { fontFamily: "montserrat" },
+          // headerShown: false
+        }}
+        name="SearchDuo"
+        component={SearchDuo}
+      />
+      <Stack.Screen
         name="Login"
         component={Login}
         options={{
-          contentStyle: { backgroundColor: "#fff" },
-          headerStyle: { backgroundColor: "#fff" },
+          contentStyle: { backgroundColor: "#fff8ed" },
+          headerStyle: { backgroundColor: "#fff8ed" },
           headerTitleStyle: { fontFamily: "montserrat" },
           headerTitle: "تسجيل دخول",
           headerTintColor: "#000",
@@ -79,8 +102,8 @@ const HomeStack = () => {
       />
       <Stack.Screen
         options={{
-          contentStyle: { backgroundColor: "#fff" },
-          headerStyle: { backgroundColor: "#fff" },
+          contentStyle: { backgroundColor: "#fff8ed" },
+          headerStyle: { backgroundColor: "#fff8ed" },
           headerBackTitle: "دخول",
           headerTitleStyle: { fontFamily: "montserrat" },
           headerTitle: "حساب جديد",

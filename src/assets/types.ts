@@ -29,4 +29,9 @@ export type RootStackParamList = {
   Register: undefined;
   Login: undefined;
   SelectDuo: undefined;
+  SearchDuo: undefined;
+  ViewWirds: {
+    duoID: number;
+    username: string;
+  };
 };

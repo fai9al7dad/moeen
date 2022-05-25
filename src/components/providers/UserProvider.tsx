@@ -67,6 +67,7 @@ const UserProvider = ({ children }) => {
           },
         });
         axios.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
+        console.log();
 
         console.log("logged in");
         dispatch({ type: ACTION_TYPES.CHECK_TOKEN, token: userToken });
@@ -87,6 +88,10 @@ const UserProvider = ({ children }) => {
       console.log("setted token");
 
       await SecureStore.setItemAsync("userToken", data?.accessToken);
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${data?.accessToken}`;
+
       dispatch({ type: ACTION_TYPES.LOGIN, token: data?.accessToken });
       console.log(state.userToken);
     },

@@ -56,7 +56,7 @@ const ToastAlert: React.FC<props> = ({ type, header, message }) => {
               <MaterialCommunityIcons
                 name="shield-check-outline"
                 size={27}
-                color={colorScheme.headerText}
+                color={"#15803d"}
               />
             )}
           </Box>

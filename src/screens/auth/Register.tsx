@@ -16,6 +16,7 @@ import axios from "axios";
 import ToastAlert from "../../components/general/ToastAlert";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useEffect } from "react";
+import ActionButton from "../../components/general/ActionButton";
 
 const CustomInput = ({ name, label, type = "text", control, rules }) => {
   return (
@@ -34,15 +35,16 @@ const CustomInput = ({ name, label, type = "text", control, rules }) => {
         </FormControl.Label> */}
               <Input
                 value={value}
+                fontFamily={"montserrat"}
                 onChangeText={onChange}
                 py={5}
                 autoCapitalize="none"
                 placeholder={label}
                 textAlign={"right"}
                 fontSize="lg"
-                backgroundColor="blueGray.100"
+                backgroundColor="#FFFCF7"
                 borderWidth={1}
-                borderColor="blueGray.200"
+                borderColor="gray.200"
                 rounded={"lg"}
                 type={type}
               />
@@ -53,7 +55,7 @@ const CustomInput = ({ name, label, type = "text", control, rules }) => {
     </>
   );
 };
-interface errorInterface {
+export interface errorInterface {
   header: string;
   body: string;
   show: boolean;
@@ -80,13 +82,15 @@ const Register = ({ navigation }) => {
     axios
       .post("api/auth/register", data)
       .then((res) => {
-        console.log("r", res.data);
         setToast({
           body: "تم تسجيل حسابك بنجاح يمكنك تسجيل الدخول الآن",
           header: "تم التسجيل 👍",
           show: true,
           type: "success",
         });
+        setTimeout(() => {
+          navigation.goBack();
+        }, 1500);
       })
       .catch((e) => {
         setToast({
@@ -205,23 +209,7 @@ const Register = ({ navigation }) => {
                 {errors.confirmPassword.message}
               </Text>
             )}
-            <Pressable
-              onPress={handleSubmit(onSubmit)}
-              mt="2"
-              py="4"
-              shadow={"3"}
-              backgroundColor="tertiary.500"
-              rounded={"lg"}
-            >
-              <Text
-                color="white"
-                fontFamily={"montserrat-bold"}
-                textAlign="center"
-                fontSize={"lg"}
-              >
-                تسجيل
-              </Text>
-            </Pressable>
+            <ActionButton text="سجل" onPress={handleSubmit(onSubmit)} />
             <Pressable onPress={() => navigation.navigate("Login")}>
               <Text
                 fontSize={"sm"}
