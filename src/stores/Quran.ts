@@ -1,3 +1,4 @@
+import { getQuranWerd } from "./../utils/sqlite/getQuranWerd";
 import { mistakesColor } from "./../assets/conts/mistakes";
 import { updateWordColor } from "./../utils/sqlite/updateWordColor";
 import { DataProvider } from "recyclerlistview";
@@ -14,7 +15,9 @@ class Quran {
   dataProvider = new DataProvider((r1, r2) => {
     return r1[0].wordID !== r2[0].wordID;
   });
-
+  cloneDataProvider = new DataProvider((r1, r2) => {
+    return r1[0].wordID !== r2[0].wordID;
+  });
   counter = 0;
   //computed
   get quranData() {
@@ -24,16 +27,26 @@ class Quran {
     makeObservable(this, {
       dataProvider: observable,
       counter: observable,
+      quranData: computed,
       initDataProvider: action,
+      initDataProviderClone: action,
       updateMistakesCounter: action,
       updateCounter: action,
-      quranData: computed,
     });
   }
   // actions
 
   initDataProvider = async () => {
     let quran: any = await getQuran();
+    let data = new DataProvider((r1, r2) => {
+      return r1[0].wordID !== r2[0].wordID;
+    }).cloneWithRows(quran);
+    runInAction(() => {
+      this.dataProvider = data;
+    });
+  };
+  initDataProviderClone = async () => {
+    let quran: any = await getQuranWerd();
     let data = new DataProvider((r1, r2) => {
       return r1[0].wordID !== r2[0].wordID;
     }).cloneWithRows(quran);

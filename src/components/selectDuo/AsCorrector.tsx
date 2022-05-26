@@ -60,7 +60,6 @@ const AsCorrector = () => {
   }
 
   const renderItem = ({ item, index }) => {
-    const textColor = "#ae8f74";
     return (
       <ListItem
         title={item.reciter.username}
@@ -68,13 +67,13 @@ const AsCorrector = () => {
         itemHeight={item_height}
         key={item.reciter.id}
         index={index}
-        onPress={() =>
+        onPress={() => {
           navigation.navigate("ViewWirds", {
             duoID: item.id,
             username: item.reciter.username,
             type: "asCorrector",
-          })
-        }
+          });
+        }}
       />
     );
   };

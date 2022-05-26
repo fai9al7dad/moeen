@@ -58,8 +58,8 @@ const AsReciter = () => {
       </Box>
     );
   }
+
   const renderItem = ({ item, index }) => {
-    const textColor = "#ae8f74";
     return (
       <ListItem
         title={item.corrector.username}
@@ -67,13 +67,13 @@ const AsReciter = () => {
         itemHeight={item_height}
         key={item.corrector.id}
         index={index}
-        onPress={() =>
+        onPress={() => {
           navigation.navigate("ViewWirds", {
             duoID: item.id,
             username: item.corrector.username,
             type: "asReciter",
-          })
-        }
+          });
+        }}
       />
     );
   };

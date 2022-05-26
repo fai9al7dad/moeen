@@ -1,12 +1,14 @@
 import { Box, Text, ZStack } from "native-base";
 import React from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+import { quranArray } from "../../../types/quran.types";
 import { RFValue } from "../../../utils/RFValue";
 import SuraHeader from "../../svg/SuraHeader";
 import Word from "./Word";
 
-const RenderWords = React.memo(
-  ({ data }) => {
+const RenderWords: React.FC<quranArray> = React.memo(
+  (props) => {
+    const { data } = props;
     const { width } = Dimensions.get("window");
     return (
       <Text
@@ -14,6 +16,8 @@ const RenderWords = React.memo(
         fontSize={RFValue(19)}
         lineHeight={RFValue(38)}
         textAlign="center"
+        // shadow={1}
+        style={styles.customShadow}
       >
         {data.map((item, index) => {
           let curLineNum = data[index]?.lineNumber;
@@ -24,7 +28,12 @@ const RenderWords = React.memo(
             if (item.charType === "end") {
               return (
                 <>
-                  <Text key={item.wordID} fontSize={"25"} color="#865520">
+                  <Text
+                    key={item.wordID}
+                    shadow={0}
+                    fontSize={"25"}
+                    color="tertiary.600"
+                  >
                     {item.text}
                   </Text>
                   {"\n"}
@@ -87,7 +96,7 @@ const RenderWords = React.memo(
           if (item.charType === "end") {
             return (
               <>
-                <Text key={item.wordID} color="#865520" fontSize={"25"}>
+                <Text key={item.wordID} color="tertiary.600" fontSize={"25"}>
                   {item.text}
                 </Text>
               </>
@@ -113,6 +122,19 @@ const RenderWords = React.memo(
   }
 );
 export default RenderWords;
+
+const styles = StyleSheet.create({
+  customShadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 0.2,
+    elevation: 2,
+  },
+});
 
 // if (lineChange) {
 //   if (item.charType === "end") {

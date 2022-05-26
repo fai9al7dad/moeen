@@ -1,16 +1,14 @@
-import { Box, Text, Pressable } from "native-base";
 import React, { useCallback, useContext, useMemo, useRef } from "react";
 
 import { LayoutProvider, RecyclerListView } from "recyclerlistview";
 import { Dimensions } from "react-native";
 import RenderPage from "./RenderPage";
 import { useNavigation } from "@react-navigation/native";
+import { inject, observer } from "mobx-react";
 import quran from "../../stores/Quran";
-import { Observer } from "mobx-react";
+import { quranArray } from "../../types/quran.types";
 
-function RenderList({ listRef, width, scrollFunc, height }) {
-  const navigation = useNavigation();
-
+function RenderList({ store, listRef, width, height }: any) {
   const layoutProvider = useMemo(() => {
     return new LayoutProvider(
       (i) => {
@@ -26,38 +24,41 @@ function RenderList({ listRef, width, scrollFunc, height }) {
       }
     );
   }, []);
-  function rowRenderer(type, data, i) {
-    return (
-      <RenderPage
-        data={data}
-        width={width}
-        scrollFunc={scrollFunc}
-        height={height}
-        navigation={navigation}
-        // extendedState={extendedState}
-      />
-    );
-  }
 
   return (
-    <RecyclerListView
-      // initialScrollIndex={5}
-      ref={listRef}
-      dataProvider={quran.dataProvider}
-      layoutProvider={layoutProvider}
-      rowRenderer={rowRenderer}
-      isHorizontal
-      snapToInterval={width}
-      decelerationRate={0}
-      pagingEnabled
-      disableIntervalMomentum
-      scrollThrottle={16}
-      showsHorizontalScrollIndicator={false}
-      bounces={false}
-      // onVisibleIndicesChanged={(i) => console.log(`i = ${i}`)}
-      // disableRecycling
-    />
+    <>
+      <RecyclerListView
+        // initialScrollIndex={5}
+        ref={listRef}
+        dataProvider={store.isWerd ? quran.dataProvider : quran.dataProvider}
+        layoutProvider={layoutProvider}
+        rowRenderer={RowRenderer}
+        isHorizontal
+        snapToInterval={width}
+        decelerationRate={0}
+        pagingEnabled
+        disableIntervalMomentum
+        scrollThrottle={16}
+        showsHorizontalScrollIndicator={false}
+        bounces={false}
+        // onVisibleIndicesChanged={(i) => console.log(`i = ${i}`)}
+        // disableRecycling
+      />
+    </>
   );
 }
 
-export default RenderList;
+export default inject("store")(observer(RenderList));
+
+const RowRenderer = (_, data: quranArray) => {
+  const { width, height } = Dimensions.get("window");
+
+  return (
+    <RenderPage
+      data={data}
+      width={width}
+      height={height}
+      // extendedState={extendedState}
+    />
+  );
+};

@@ -7,6 +7,7 @@ import { QuranDataContext } from "../../../contexts/QuranDataContext";
 import { getRowById } from "../../../utils/sqlite/getRowById";
 import quran from "../../../stores/Quran";
 import store from "../../../stores/Store";
+import { StyleSheet } from "react-native";
 
 interface props {
   color: string;
@@ -110,7 +111,7 @@ const Word: React.FC<props> = React.memo(
             }}
             animate={{
               translateY: 0,
-              translateX: isStartOfLine ? 40 : 0,
+              translateX: 40,
               scale: 1,
               opacity: 1,
               transition: {

@@ -75,6 +75,7 @@ const ViewWirds = ({ route, navigation }) => {
       </Box>
     );
   }
+
   const renderItem = ({ item, index }) => {
     return (
       <ListItem
