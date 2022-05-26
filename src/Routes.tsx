@@ -10,6 +10,8 @@ import Login from "./screens/auth/Login";
 import { SelectDuo } from "./screens/duo/SelectDuo";
 import SearchDuo from "./screens/duo/SearchDuo";
 import ViewWirds from "./screens/duo/ViewWirds";
+import FinishWerd from "./screens/werd/FinishWerd";
+import ViewWerdHighlights from "./screens/werd/ViewWerdHighlights";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -56,10 +58,24 @@ const HomeStack = () => {
           headerTitle: "اختر الثنائي",
           headerTintColor: "#047857",
           headerBackTitleStyle: { fontFamily: "montserrat" },
-          // headerShown: false
+          // headerShown: false,
         }}
         name="SelectDuo"
         component={SelectDuo}
+      />
+      <Stack.Screen
+        options={{
+          contentStyle: { backgroundColor: "#fff8ed" },
+          headerStyle: { backgroundColor: "#fff8ed" },
+          headerBackTitle: "المصحف",
+          headerTitleStyle: { fontFamily: "montserrat" },
+          headerTitle: "اختر الثنائي",
+          headerTintColor: "#047857",
+          headerBackTitleStyle: { fontFamily: "montserrat" },
+          // headerShown: false
+        }}
+        name="FinishWerd"
+        component={FinishWerd}
       />
       <Stack.Screen
         options={{
@@ -74,6 +90,20 @@ const HomeStack = () => {
         }}
         name="ViewWirds"
         component={ViewWirds}
+      />
+      <Stack.Screen
+        options={{
+          contentStyle: { backgroundColor: "#fff8ed" },
+          headerStyle: { backgroundColor: "#fff8ed" },
+          headerBackTitle: "الأوراد",
+          headerTitleStyle: { fontFamily: "montserrat" },
+          headerTitle: "تفاصيل الورد",
+          headerTintColor: "#047857",
+          headerBackTitleStyle: { fontFamily: "montserrat" },
+          // headerShown: false
+        }}
+        name="ViewWerdsHighlights"
+        component={ViewWerdHighlights}
       />
       <Stack.Screen
         options={{

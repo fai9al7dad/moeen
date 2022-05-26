@@ -19,6 +19,7 @@ import { openQuranDB } from "./src/utils/sqlite/quranDB";
 import { loadAsync } from "expo-font";
 import { UserContext } from "./src/components/providers";
 import UserProvider from "./src/components/providers/UserProvider";
+import store from "./src/stores/Store";
 I18nManager.forceRTL(true);
 I18nManager.allowRTL(true);
 const App = React.memo(() => {
@@ -79,7 +80,7 @@ const App = React.memo(() => {
     <NativeBaseProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <UserProvider>
-          <Provider quran={quran}>
+          <Provider quran={quran} store={store}>
             <Box onLayout={onLayoutRootView} flex={1} position="relative">
               <Routes />
             </Box>

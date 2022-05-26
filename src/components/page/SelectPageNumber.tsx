@@ -3,8 +3,12 @@ import { Box, Button, Input, Modal, Pressable, Text } from "native-base";
 import { QuranDataContext } from "../../contexts/QuranDataContext";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
-const SelectPageNumber = React.memo(
+import { quranRow } from "../../types/quran.types";
+interface props {
+  data: quranRow;
+  textColor: string;
+}
+const SelectPageNumber: React.FC<props> = React.memo(
   ({ data, textColor }) => {
     const [showPageSelectorModal, setShowPageSelectorModal] = useState(false);
     const [isInvalid, setIsInvalid] = useState(true);

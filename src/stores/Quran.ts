@@ -9,7 +9,6 @@ import {
   runInAction,
 } from "mobx";
 import { getQuran } from "../utils/sqlite/getQuran";
-
 class Quran {
   // state
   dataProvider = new DataProvider((r1, r2) => {
@@ -72,10 +71,7 @@ class Quran {
 
         this.quranData[pageNumber - 1][0].mistakes--;
     }
-    // dont know if required, just thought it will optimize performance
-    setTimeout(() => {
-      updateWordColor(newColor, wordID);
-    }, 500);
+    // here was updateQuran function
     // counter update is required, to rerender header. to fix later
     this.counter++;
   };

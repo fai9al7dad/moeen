@@ -6,6 +6,7 @@ import { updateWordColor } from "../../../utils/sqlite/updateWordColor";
 import { QuranDataContext } from "../../../contexts/QuranDataContext";
 import { getRowById } from "../../../utils/sqlite/getRowById";
 import quran from "../../../stores/Quran";
+import store from "../../../stores/Store";
 
 interface props {
   color: string;
@@ -47,6 +48,9 @@ const Word: React.FC<props> = React.memo(
             index,
             newColor
           );
+          if (store.isWerd) {
+            store.updateMistakesOrWarningsCounter("warning", wordID);
+          }
 
           break;
         case mistakesColor.warning:
@@ -58,7 +62,9 @@ const Word: React.FC<props> = React.memo(
             index,
             newColor
           );
-
+          if (store.isWerd) {
+            store.updateMistakesOrWarningsCounter("mistake", wordID);
+          }
           break;
         case mistakesColor.mistake:
           newColor = mistakesColor.default;
@@ -70,8 +76,17 @@ const Word: React.FC<props> = React.memo(
             newColor
           );
 
+          if (store.isWerd) {
+            store.updateMistakesOrWarningsCounter("revert", wordID);
+          }
           break;
       }
+      // dont know if required, just thought it will optimize performance
+      setTimeout(() => {
+        if (!store.isWerd) {
+          updateWordColor(newColor, wordID);
+        }
+      }, 500);
       setWordColor(newColor);
     };
 

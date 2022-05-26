@@ -30,6 +30,11 @@ export type RootStackParamList = {
   Login: undefined;
   SelectDuo: undefined;
   SearchDuo: undefined;
+  FinishWerd: undefined;
+  ViewWerdsHighlights: {
+    duoID: number;
+    username: string;
+  };
   ViewWirds: {
     duoID: number;
     username: string;

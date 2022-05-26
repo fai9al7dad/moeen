@@ -15,8 +15,8 @@ export const SelectDuo = ({ navigation }) => {
   const [index, setIndex] = React.useState(0);
   const [isOnline, setIsOnline] = React.useState(true);
   const [routes] = React.useState([
-    { key: "corrector", title: "كمصحح" },
     { key: "reciter", title: "كمسمع" },
+    { key: "corrector", title: "كمصحح" },
     { key: "invites", title: "طلبات الإضافة" },
   ]);
   const { state } = useContext(UserContext);
@@ -54,10 +54,10 @@ export const SelectDuo = ({ navigation }) => {
   }
   const renderScene = ({ route, jumpTo }) => {
     switch (route.key) {
-      case "corrector":
-        return <AsCorrector />;
       case "reciter":
         return <AsReciter />;
+      case "corrector":
+        return <AsCorrector />;
       case "invites":
         return <ViewDuoInvites jumpTo={jumpTo} />;
     }

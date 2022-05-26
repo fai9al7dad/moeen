@@ -12,7 +12,7 @@ const RenderWords = React.memo(
       <Text
         fontFamily={`p${data[0]?.pageNumber}`}
         fontSize={RFValue(19)}
-        lineHeight={RFValue(40)}
+        lineHeight={RFValue(38)}
         textAlign="center"
       >
         {data.map((item, index) => {
@@ -33,16 +33,31 @@ const RenderWords = React.memo(
             }
             if (item.isNewChapter) {
               if (item.isBismillah && item.pageNumber !== 187) {
+                let condition = item.lineNumber === 1;
                 return (
                   <>
-                    <Text key={item.wordID} fontSize="2xl" textAlign="center">
-                      <Box width={width * 0.3} height={5}></Box>
+                    <Text
+                      key={item.wordID}
+                      fontSize={condition ? "3xl" : "2xl"}
+                      textAlign="center"
+                    >
+                      <Box
+                        width={condition ? width * 0.26 : width * 0.3}
+                        height={5}
+                      ></Box>
                       <Text>﷽</Text>
                       {"\n"}
+                      {condition ? (
+                        <Box
+                          width={condition ? width * 0.26 : width * 0.3}
+                          height={4}
+                        ></Box>
+                      ) : null}
                     </Text>
                   </>
                 );
               }
+
               return (
                 <>
                   <SuraHeader

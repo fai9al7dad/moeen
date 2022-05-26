@@ -4,23 +4,16 @@ import { Dimensions } from "react-native";
 import { QuranDataContext } from "../contexts/QuranDataContext";
 import RenderList from "../components/page/ListRender";
 import { inject, observer } from "mobx-react";
+import { useState } from "react";
 
-const Quran = ({ quran, route, navigation }) => {
+const Quran = ({ quran, navigation }) => {
   const listRef = useRef<any>(null);
   const { width, height } = Dimensions.get("window");
   console.log("rendered quran");
-
+  // to force rerender after finishing werd
   useEffect(() => {
     quran.initDataProvider();
   }, []);
-  useEffect(() => {
-    let pageNumber = 0;
-    if (route?.params !== undefined) {
-      console.log("called");
-      pageNumber = route?.params?.pageNumber;
-      listRef.current.scrollToIndex(pageNumber);
-    }
-  }, [route]);
 
   const scrollFunc = useCallback(
     (index) => {

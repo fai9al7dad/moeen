@@ -12,6 +12,9 @@ const ActionButton: React.FC<props> = ({ onPress, text, style }) => {
       onPress={onPress}
       mt="2"
       py="4"
+      _pressed={{
+        backgroundColor: "tertiary.600",
+      }}
       // shadow={"3"}
       borderBottomWidth={5}
       borderBottomColor="tertiary.700"

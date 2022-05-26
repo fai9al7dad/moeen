@@ -2,8 +2,18 @@ import React from "react";
 import { Box, Text } from "native-base";
 import { inject, observer } from "mobx-react";
 import { mistakesColor } from "../../../assets/conts/mistakes";
+import store from "../../../stores/Store";
 
-const RenderMistakesAndWarnings = ({ quran, textColor, pageNumber }) => {
+interface props {
+  quran?: any;
+  textColor: string;
+  pageNumber: number;
+}
+const RenderMistakesAndWarnings: React.FC<props> = ({
+  quran,
+  textColor,
+  pageNumber,
+}) => {
   let curDataFromStore = quran.quranData[pageNumber - 1][0];
 
   return (

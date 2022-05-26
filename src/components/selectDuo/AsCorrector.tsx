@@ -9,6 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import ActionButton from "../general/ActionButton";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../assets/types";
+import ListItem from "./atom/ListItem";
 const AsCorrector = () => {
   const navigation: any = useNavigation();
   const { width } = Dimensions.get("window");
@@ -57,70 +58,29 @@ const AsCorrector = () => {
       </Box>
     );
   }
+
   const renderItem = ({ item, index }) => {
     const textColor = "#ae8f74";
-
     return (
-      <Pressable
-        key={item.reciterID}
-        height={item_height}
-        flexDirection="row"
-        alignItems="center"
-        justifyContent={"space-between"}
-        px={5}
+      <ListItem
+        title={item.reciter.username}
+        id={item.reciter.id}
+        itemHeight={item_height}
+        key={item.reciter.id}
+        index={index}
         onPress={() =>
           navigation.navigate("ViewWirds", {
             duoID: item.id,
             username: item.reciter.username,
+            type: "asCorrector",
           })
         }
-      >
-        <Box flexDirection="row" alignItems="center">
-          <Center
-            w={7}
-            h={7}
-            rounded="md"
-            bg={"tertiary.50"}
-            borderWidth={0.5}
-            borderColor="tertiary.200"
-            mr={5}
-          >
-            <Text fontSize={"sm"} color="tertiary.700">
-              {index + 1}
-            </Text>
-          </Center>
-          <Box>
-            <Text
-              fontFamily={"montserrat"}
-              fontSize={"lg"}
-              color={"gray.800"}
-              textAlign="left"
-            >
-              {item.reciter.username}
-            </Text>
-            <Text
-              fontFamily={"montserrat"}
-              fontSize={"10"}
-              color={"gray.400"}
-              textAlign="left"
-            >
-              رقم المعرف: {item.reciter.id}
-            </Text>
-          </Box>
-        </Box>
-        <Box>
-          <Ionicons
-            name="ios-chevron-back-outline"
-            size={18}
-            color={"#059669"}
-          />
-        </Box>
-      </Pressable>
+      />
     );
   };
 
   return (
-    <Box flex={1} alignItems="center" mt={5} position="relative">
+    <Box flex={1} alignItems="center" mt={5}>
       <FlatList
         keyExtractor={(item) => item.reciter.id.toString()}
         data={data}
@@ -134,11 +94,13 @@ const AsCorrector = () => {
         }}
       />
 
-      <ActionButton
-        text="إضافة مسمع"
-        onPress={() => navigation.navigate("SearchDuo")}
-        style={{ position: "absolute", bottom: 50, width: "90%" }}
-      />
+      <Box mb={10} width={"100%"} alignItems="center" justifyContent={"center"}>
+        <ActionButton
+          text="إضافة مسمع"
+          onPress={() => navigation.navigate("SearchDuo")}
+          style={{ width: "90%" }}
+        />
+      </Box>
     </Box>
   );
 };
