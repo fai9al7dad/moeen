@@ -4,6 +4,7 @@ import { Asset } from "expo-asset";
 
 export const openQuranDB = async () => {
   const dbName = "quran-v2.db";
+  // console.log("calling openquran");
 
   if (
     !(await FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite"))

@@ -1,16 +1,16 @@
 import { Box, Center, Pressable, Text } from "native-base";
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
-
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 interface props {
   itemHeight: number;
   onPress: any;
   index: number;
   title: string;
   id: number;
+  isWirdAccepted: boolean;
 }
 const ListItem: React.FC<props> = React.memo(
-  ({ itemHeight, onPress, index, title, id }) => {
+  ({ itemHeight, onPress, index, title, id, isWirdAccepted }) => {
     return (
       <Pressable
         key={id}
@@ -42,7 +42,7 @@ const ListItem: React.FC<props> = React.memo(
               color={"gray.800"}
               textAlign="left"
             >
-              {title}
+              {title.length > 25 ? title.slice(0, 25) + "..." : title}
             </Text>
             <Text
               fontFamily={"montserrat"}
@@ -54,12 +54,15 @@ const ListItem: React.FC<props> = React.memo(
             </Text>
           </Box>
         </Box>
-        <Box>
+        <Box flexDirection={"row"} alignItems="center">
           <Ionicons
             name="ios-chevron-back-outline"
             size={18}
             color={"#059669"}
           />
+          {/* {!isWirdAccepted && isWirdAccepted !== undefined ? (
+            <MaterialIcons name="pending-actions" size={18} color="#059669" />
+          ) : null} */}
         </Box>
       </Pressable>
     );

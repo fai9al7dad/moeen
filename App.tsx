@@ -7,8 +7,7 @@ import {
   useToast,
 } from "native-base";
 import Routes from "./src/Routes";
-import { fonts } from "./src/utils/allFontsGlyps";
-import { fontCon } from "./src/utils/fontConfigNative";
+import { fontCon } from "./src/utils/fonts/fontConfigNative";
 import * as SplashScreen from "expo-splash-screen";
 import { QueryClient, QueryClientProvider } from "react-query";
 import axios from "axios";
@@ -20,13 +19,21 @@ import { loadAsync } from "expo-font";
 import { UserContext } from "./src/components/providers";
 import UserProvider from "./src/components/providers/UserProvider";
 import store from "./src/stores/Store";
+import { fonts1_100 } from "./src/utils/fonts/allFontsGlyps1-100";
+import { fonts101_200 } from "./src/utils/fonts/allFontsGlyps101-200";
+import { fonts201_301 } from "./src/utils/fonts/allFontsGlyps201-301";
+import { fonts302_402 } from "./src/utils/fonts/allFontsGlyps302-402";
+import { fonts403_503 } from "./src/utils/fonts/allFontsGlyps403-503";
+import { fonts504_604 } from "./src/utils/fonts/allFontsGlyps504-604";
 I18nManager.forceRTL(true);
 I18nManager.allowRTL(true);
 const App = React.memo(() => {
   axios.defaults.headers.post["Content-Type"] = "application/json";
   axios.defaults.headers.post["Accept"] = "application/json";
   axios.defaults.withCredentials = true;
-  axios.defaults.baseURL = "http://192.168.1.51:8000";
+  axios.defaults.baseURL =
+    "http://c423-2001-16a2-f8e7-da00-e157-e9a-b3e0-6df6.eu.ngrok.io";
+  // "http://99a0-2001-16a2-f775-2100-3130-7291-fde4-f255.eu.ngrok.io";
   // let [fontsLoaded] = useFonts(fonts);
   const { width, height } = Dimensions.get("window");
   const [appIsReady, setAppIsReady] = useState(false);
@@ -42,10 +49,18 @@ const App = React.memo(() => {
           // Keep the splash screen visible while we fetch resources
           await SplashScreen.preventAutoHideAsync();
           await openQuranDB();
-          await loadAsync(fonts);
+          await SplashScreen.hideAsync();
+          await loadAsync(fonts1_100);
+          await loadAsync(fonts101_200);
+          await loadAsync(fonts201_301);
+          await loadAsync(fonts302_402);
+          await loadAsync(fonts403_503);
+          await loadAsync(fonts504_604);
         } catch (e) {
           console.warn("e", e);
         } finally {
+          console.log("finished");
+
           // Tell the application to render
           setAppIsReady(true);
         }
@@ -56,11 +71,11 @@ const App = React.memo(() => {
       mounted = false;
     };
   }, []);
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
+  // const onLayoutRootView = useCallback (async () => {
+  //   if (appIsReady) {
+  //     await SplashScreen.hideAsync();
+  //   }
+  // }, [appIsReady]);
 
   if (!appIsReady) {
     return (
@@ -81,7 +96,7 @@ const App = React.memo(() => {
       <QueryClientProvider client={queryClient}>
         <UserProvider>
           <Provider quran={quran} store={store}>
-            <Box onLayout={onLayoutRootView} flex={1} position="relative">
+            <Box flex={1} position="relative">
               <Routes />
             </Box>
           </Provider>

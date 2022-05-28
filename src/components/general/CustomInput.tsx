@@ -1,14 +1,18 @@
-import { FormControl, Input } from "native-base";
+import { FormControl, Input, Text } from "native-base";
 import React from "react";
 import { Controller } from "react-hook-form";
 
 interface props {
   name: string;
-  label: string;
+  label?: string;
   control: any;
   type?: string;
   formControlStyle?: object;
   inputStyle?: object;
+  topLabel?: string;
+  rules?: object;
+  isRequired?: boolean;
+  hideRoundedRight?: boolean;
 }
 export const CustomInput: React.FC<props> = ({
   name,
@@ -16,27 +20,31 @@ export const CustomInput: React.FC<props> = ({
   type = "text",
   control,
   formControlStyle,
-  inputStyle,
+  isRequired = true,
+  rules,
+  topLabel,
+  hideRoundedRight = false,
 }) => {
   return (
     <>
       <Controller
         control={control}
         name={name}
-        rules={{ required: true }}
+        rules={rules ? rules : { required: isRequired }}
         render={({ field: { value, onChange } }) => {
           return (
             <FormControl style={formControlStyle}>
-              {/* <FormControl.Label>
-          <Text color="blueGray.500" fontFamily={"montserrat"}>
-            {label}
-          </Text>
-        </FormControl.Label> */}
+              {topLabel ? (
+                <FormControl.Label>
+                  <Text color="gray.400" fontFamily={"montserrat"}>
+                    {topLabel}
+                  </Text>
+                </FormControl.Label>
+              ) : null}
               <Input
                 value={value}
                 onChangeText={onChange}
                 py={5}
-                roundedRight={0}
                 autoCapitalize="none"
                 placeholder={label}
                 textAlign={"right"}
@@ -45,6 +53,7 @@ export const CustomInput: React.FC<props> = ({
                 fontFamily={"montserrat"}
                 borderWidth={1}
                 borderColor="gray.200"
+                roundedRight={hideRoundedRight ? 0 : "lg"}
                 rounded={"lg"}
                 type={type}
               />

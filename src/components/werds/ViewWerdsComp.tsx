@@ -1,25 +1,35 @@
-import { Dimensions, FlatList } from "react-native";
-import React, { useEffect } from "react";
-import { useQuery } from "react-query";
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import ActionButton from "../../components/general/ActionButton";
-import { Box, Center, Spinner, Text } from "native-base";
-import EmptyList from "../../components/svg/EmptyList";
-import store from "../../stores/Store";
-import ListItem from "../../components/selectDuo/atom/ListItem";
+import { Box, Center, FlatList, Spinner, Text } from "native-base";
+import React, { useContext } from "react";
+import { Dimensions } from "react-native";
+import { useQuery } from "react-query";
 import { WerdDataContext } from "../../contexts/WerdDataContext";
+import store from "../../stores/Store";
+import ActionButton from "../general/ActionButton";
+import ListItem from "../selectDuo/atom/ListItem";
+import EmptyList from "../svg/EmptyList";
 
-const ViewWirds = ({ route, navigation }) => {
-  const { duoID, username, type } = route.params;
+const ViewWerdsComp = () => {
   const { width } = Dimensions.get("window");
-  // useEffect(() => {
-  //   navigation.setOptions({ headerTitle: `${username} ` });
-  // }, []);
 
+  const {
+    username,
+    type,
+    duoID,
+    setTitle,
+    setEndSurah,
+    setEndVerseNumber,
+    setStartSurah,
+    setStartVerseNumber,
+    setWerdID,
+    werdID,
+    setIsAccepted,
+  } = useContext(WerdDataContext);
+  const navigation: any = useNavigation();
   const fetchWirds = React.useCallback(async () => {
     try {
       let res = await axios.get(`/api/werd/duo-id/${duoID}`);
-
       return res.data;
     } catch (e: any) {
       console.log(e.response.data);
@@ -80,7 +90,7 @@ const ViewWirds = ({ route, navigation }) => {
     );
   }
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item, index }): any => {
     let title = "";
     if (item.startSurah !== null) {
       title = `${item.startSurah ? item.startSurah : ""} ${
@@ -92,17 +102,16 @@ const ViewWirds = ({ route, navigation }) => {
       title = item.id.toString();
     }
     const onPress = () => {
-      store.currentWerdID = item.id;
-      navigation.navigate("ViewWerdsHighlights", {
-        title: title,
-        username: username,
-        type: type,
-        isAccepted: item.isAccepted,
-        startSurah: item.startSurah,
-        endSurah: item.endSurah,
-        startVerseNumber: item.startVerseNumber,
-        endVerseNumber: item.endVerseNumber,
-      });
+      setWerdID(item.id);
+      //   setTitle(title);
+      //   setIsAccepted(item.isAccepted);
+      //   setStartSurah(item.startSurah);
+      //   setEndSurah(item.endSurah);
+      //   setStartVerseNumber(item.startVerseNumber);
+      //   setEndVerseNumber(item.endVerseNumber);
+      console.log(werdID);
+
+      //   navigation.navigate("ViewWerdsHighlights");
     };
     return (
       <ListItem
@@ -115,6 +124,7 @@ const ViewWirds = ({ route, navigation }) => {
       />
     );
   };
+
   return (
     <Box flex={1} mt={5} alignItems="center">
       <FlatList
@@ -149,7 +159,7 @@ const ViewWirds = ({ route, navigation }) => {
   );
 };
 
-export default ViewWirds;
+export default ViewWerdsComp;
 
 const startWird = async (duoID: number, username: string, navigation: any) => {
   try {
@@ -158,12 +168,7 @@ const startWird = async (duoID: number, username: string, navigation: any) => {
     let werd = res.data;
     // store werd id
     store.startWerd(werd?.id, duoID, username);
-    console.log("worked");
-
-    navigation.navigate("StartOrFinishWerdMeta", {
-      isStart: true,
-      werdID: werd?.id,
-    });
+    navigation.navigate("Quran");
   } catch (e: any) {
     console.log(e.response.data);
   }

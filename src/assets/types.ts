@@ -31,6 +31,7 @@ export type RootStackParamList = {
   SelectDuo: undefined;
   SearchDuo: undefined;
   FinishWerd: undefined;
+  WerdMeta: undefined;
   ViewWerdsHighlights: {
     duoID: number;
     username: string;

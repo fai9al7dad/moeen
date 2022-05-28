@@ -3,6 +3,7 @@ import axios from "axios";
 
 class Store {
   // state
+  currentWerdID = 0;
   isWerd = false;
   werdID = 0;
   duoID = 0;
@@ -15,6 +16,7 @@ class Store {
     makeObservable(this, {
       isWerd: observable,
       werdID: observable,
+      currentWerdID: observable,
       duoID: observable,
       username: observable,
       mistakesCounter: observable,

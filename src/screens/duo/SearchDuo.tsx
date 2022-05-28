@@ -34,12 +34,13 @@ const SearchDuo = () => {
 
   const onSubmit = (data) => {
     let query = data?.query;
+
     mutate({ query });
   };
   const sendInvite = async (userID: number) => {
     try {
-      let res = await axios.post("/api/duo/accept-invite", {
-        corrector: userID.toString(),
+      let res = await axios.post("/api/duo/send-invite", {
+        reciter: userID.toString(),
       });
       setToast({
         body: "تم ارسال طلب الإضافة بنجاح",
@@ -50,10 +51,8 @@ const SearchDuo = () => {
 
       return res.data;
     } catch (e: any) {
-      console.log(e.response.data);
-
       setToast({
-        body: "لقد أرسلت دعوة مسبقا اليه",
+        body: e.response.data.message,
         header: "حصل خطأ 😔",
         show: true,
         type: "error",
@@ -141,11 +140,12 @@ const SearchDuo = () => {
           name="query"
           label="ابحث.."
           control={control}
-          formControlStyle={{ width: "80%" }}
+          formControlStyle={{ width: "75%" }}
+          hideRoundedRight
         />
         <Button
           onPress={handleSubmit(onSubmit)}
-          width={"20%"}
+          width={"25%"}
           height="100%"
           roundedLeft={0}
           bg="tertiary.600"
@@ -179,7 +179,7 @@ const SearchDuo = () => {
         </Box>
       ) : null}
 
-      {isSuccess && data?.result?.length > 1 ? (
+      {isSuccess && data?.result?.length > 0 ? (
         <FlatList
           keyExtractor={(item, index) => item.id.toString()}
           data={data.result}
@@ -189,7 +189,7 @@ const SearchDuo = () => {
           contentContainerStyle={{
             backgroundColor: "#FFFCF7",
             marginTop: 20,
-            width: width * 0.9,
+            // width: width * 0.9,
             borderRadius: 10,
           }}
         />

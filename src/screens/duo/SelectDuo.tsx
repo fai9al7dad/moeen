@@ -15,8 +15,8 @@ export const SelectDuo = ({ navigation }) => {
   const [index, setIndex] = React.useState(0);
   const [isOnline, setIsOnline] = React.useState(true);
   const [routes] = React.useState([
-    { key: "reciter", title: "كمسمع" },
-    { key: "corrector", title: "كمصحح" },
+    { key: "reciter", title: "المصححين لك" },
+    { key: "corrector", title: "المسمعين عندك" },
     { key: "invites", title: "طلبات الإضافة" },
   ]);
   const { state } = useContext(UserContext);

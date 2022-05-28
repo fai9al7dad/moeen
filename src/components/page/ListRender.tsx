@@ -36,11 +36,11 @@ function RenderList({ store, listRef, width, height }: any) {
         isHorizontal
         snapToInterval={width}
         decelerationRate={0}
-        pagingEnabled
         disableIntervalMomentum
         scrollThrottle={16}
         showsHorizontalScrollIndicator={false}
         bounces={false}
+        // pagingEnabled
         // onVisibleIndicesChanged={(i) => console.log(`i = ${i}`)}
         // disableRecycling
       />

@@ -12,8 +12,10 @@ import SearchDuo from "./screens/duo/SearchDuo";
 import ViewWirds from "./screens/duo/ViewWirds";
 import FinishWerd from "./screens/werd/FinishWerd";
 import ViewWerdHighlights from "./screens/werd/ViewWerdHighlights";
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
+import WerdMeta from "./screens/werd/WerdMeta";
+import StartOrFinishWerdMeta from "./screens/werd/StartOrFinishWerdMeta";
+// <RootStackParamList>
+const Stack = createNativeStackNavigator();
 
 const HomeStack = () => {
   // const fadeNavigation = ({ current }) => ({
@@ -104,6 +106,35 @@ const HomeStack = () => {
         }}
         name="ViewWerdsHighlights"
         component={ViewWerdHighlights}
+      />
+      <Stack.Screen
+        options={{
+          contentStyle: { backgroundColor: "#fff8ed" },
+          headerStyle: { backgroundColor: "#fff8ed" },
+          headerBackTitle: "الأوراد",
+          headerTitleStyle: { fontFamily: "montserrat" },
+          headerTitle: "تفاصيل الورد",
+          headerTintColor: "#047857",
+          headerBackTitleStyle: { fontFamily: "montserrat" },
+          // headerShown: false
+        }}
+        name="StartOrFinishWerdMeta"
+        component={StartOrFinishWerdMeta}
+      />
+      <Stack.Screen
+        options={{
+          contentStyle: { backgroundColor: "#fff8ed" },
+          headerStyle: { backgroundColor: "#fff8ed" },
+          headerBackTitle: "الورد",
+          headerTitleStyle: { fontFamily: "montserrat" },
+          headerTitle: "تعديل الورد",
+          headerTintColor: "#047857",
+          presentation: "modal",
+          headerBackTitleStyle: { fontFamily: "montserrat" },
+          // headerShown: false
+        }}
+        name="WerdMeta"
+        component={WerdMeta}
       />
       <Stack.Screen
         options={{

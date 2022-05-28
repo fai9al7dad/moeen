@@ -8,10 +8,12 @@ import quran from "../../stores/Quran";
 const FinishWerd = ({ navigation }) => {
   const endWerd = async () => {
     // call finish werd from store
-    // init quran from quran store
     // go back after finish
+    navigation.navigate("StartOrFinishWerdMeta", {
+      isStart: false,
+      werdID: store.werdID,
+    });
     store.finishWerd();
-    navigation.navigate("Quran");
   };
   return (
     <Box h={"100%"} px={4} justifyContent="space-between">

@@ -2,11 +2,19 @@ import { Pressable, Text } from "native-base";
 import React from "react";
 
 interface props {
-  onPress: any;
+  onPress?: any;
   text: string;
   style?: object;
+  disabled?: boolean;
+  textStyle?: object;
 }
-const ActionButton: React.FC<props> = ({ onPress, text, style }) => {
+const ActionButton: React.FC<props> = ({
+  onPress,
+  text,
+  style,
+  disabled = false,
+  textStyle,
+}) => {
   return (
     <Pressable
       onPress={onPress}
@@ -15,6 +23,7 @@ const ActionButton: React.FC<props> = ({ onPress, text, style }) => {
       _pressed={{
         backgroundColor: "tertiary.600",
       }}
+      disabled={disabled}
       // shadow={"3"}
       borderBottomWidth={5}
       borderBottomColor="tertiary.700"
@@ -27,6 +36,7 @@ const ActionButton: React.FC<props> = ({ onPress, text, style }) => {
         fontFamily={"montserrat-bold"}
         textAlign="center"
         fontSize={"lg"}
+        style={textStyle}
       >
         {text}
       </Text>

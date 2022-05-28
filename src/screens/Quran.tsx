@@ -14,21 +14,23 @@ const Quran = ({ quran, route, store, navigation }) => {
     const bootstrapCall = async () => {
       if (store.isWerd) {
         quran.initDataProviderClone();
-        setTimeout(() => {
-          // to fix later, beacuse list words dont update unitl out of window
-          listRef.current.scrollToIndex(0);
-          listRef.current.scrollToIndex(4);
-        }, 500);
       } else {
         quran.initDataProvider();
       }
+      setTimeout(() => {
+        // to fix later, beacuse list words dont update unitl out of window
+        if (listRef?.current) {
+          listRef?.current?.scrollToIndex(4);
+          listRef.current.scrollToIndex(0);
+        }
+      }, 500);
     };
     bootstrapCall();
   }, [store.isWerd]);
 
   const scrollFunc = useCallback(
     (index) => {
-      listRef.current.scrollToIndex(index);
+      listRef?.current?.scrollToIndex(index);
     },
     [listRef]
   );
