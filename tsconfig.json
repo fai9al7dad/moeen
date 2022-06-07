@@ -11,7 +11,9 @@
     "noEmit": true,
     "strict": true,
     "noImplicitAny": false,
-    "target": "esnext"
+    "target": "esnext",
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false
   },
   "exclude": [
     "node_modules",

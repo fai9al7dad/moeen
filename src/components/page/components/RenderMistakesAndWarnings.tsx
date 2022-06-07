@@ -14,7 +14,7 @@ const RenderMistakesAndWarnings: React.FC<props> = ({
   textColor,
   pageNumber,
 }) => {
-  let curDataFromStore = quran.quranData[pageNumber - 1][0];
+  let curDataFromStore = quran.quranData[pageNumber - 1];
 
   return (
     <Box flexDirection="row" alignItems="center">

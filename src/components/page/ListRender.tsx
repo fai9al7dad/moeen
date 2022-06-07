@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { inject, observer } from "mobx-react";
 import quran from "../../stores/Quran";
 import { quranArray } from "../../types/quran.types";
+import { Text } from "native-base";
 
 function RenderList({ store, listRef, width, height }: any) {
   const layoutProvider = useMemo(() => {
@@ -40,6 +41,7 @@ function RenderList({ store, listRef, width, height }: any) {
         scrollThrottle={16}
         showsHorizontalScrollIndicator={false}
         bounces={false}
+        renderAheadOffset={500}
         // pagingEnabled
         // onVisibleIndicesChanged={(i) => console.log(`i = ${i}`)}
         // disableRecycling

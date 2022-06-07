@@ -157,12 +157,11 @@ const startWird = async (duoID: number, username: string, navigation: any) => {
     let res = await axios.post("/api/werd/add", { duoID: duoID.toString() });
     let werd = res.data;
     // store werd id
-    store.startWerd(werd?.id, duoID, username);
-    console.log("worked");
-
     navigation.navigate("StartOrFinishWerdMeta", {
       isStart: true,
       werdID: werd?.id,
+      username: username,
+      duoID: duoID,
     });
   } catch (e: any) {
     console.log(e.response.data);

@@ -67,13 +67,10 @@ const UserProvider = ({ children }) => {
           },
         });
         axios.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
-        console.log();
-
         console.log("logged in");
         dispatch({ type: ACTION_TYPES.CHECK_TOKEN, token: userToken });
       } catch (e: any) {
         dispatch({ type: ACTION_TYPES.REMOVE_TOKEN });
-
         console.log("not logged in", e.response.data);
       }
     };

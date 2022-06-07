@@ -6,6 +6,7 @@ import SURAHS from "../assets/json/SURAHS.json";
 import { getChapterMistakesAndWarnings } from "../utils/sqlite/getChapterMistakesAndWarnings";
 import { mistakesColor } from "../assets/conts/mistakes";
 import { Dimensions } from "react-native";
+import colorsModel from "../utils/sqlite/model/colorsModel";
 
 const SelectSurah = ({ navigation }) => {
   const [finished, setFinished] = useState(false);
@@ -19,19 +20,18 @@ const SelectSurah = ({ navigation }) => {
         // to start chapter from 1
         let chapterIndex = i + 1;
         let chapterPrefix = ("00" + chapterIndex).slice(-3);
-        const mistakes = await getChapterMistakesAndWarnings(
-          mistakesColor.mistake,
-          chapterPrefix
-        );
+        const mistakes: any = await colorsModel.getChapterMistakesAndWarnings({
+          wordColor: mistakesColor.mistake,
+          chapterCode: chapterPrefix,
+        });
+        const warnings: any = await colorsModel.getChapterMistakesAndWarnings({
+          wordColor: mistakesColor.warning,
+          chapterCode: chapterPrefix,
+        });
 
-        const warnings = await getChapterMistakesAndWarnings(
-          mistakesColor.warning,
-          chapterPrefix
-        );
-        SURAHS.chapters[i].mistakes = mistakes?.mistakes;
-        SURAHS.chapters[i].warnings = warnings?.warnings;
+        SURAHS.chapters[i].mistakes = mistakes[0]?.mistakes;
+        SURAHS.chapters[i].warnings = warnings[0]?.warnings;
       }
-
       setFinished(true);
     };
     get();

@@ -24,6 +24,7 @@ const ViewDuoInvites = ({ jumpTo }) => {
     try {
       let res = await axios.post(`/api/duo/${data.type}-invite`, {
         corrector: data.id.toString(),
+        isQuickAdd: false,
       });
       queryClient.refetchQueries(["asReciter"]);
 
@@ -70,24 +71,26 @@ const ViewDuoInvites = ({ jumpTo }) => {
     return (
       <Box height={"100%"} justifyContent={"center"} alignItems="center">
         <EmptyList />
-        <Text
-          textAlign={"center"}
-          fontFamily="montserrat-bold"
-          color="gray.800"
-          fontSize={"2xl"}
-          mt={5}
-        >
-          {error.message}
-        </Text>
-        <Text
-          textAlign={"center"}
-          fontFamily="montserrat"
-          color="gray.500"
-          fontSize={"md"}
-          mt={5}
-        >
-          ستتحدث القائمة مباشرة اذا تم إرسال طلبات إضافة كمسمع إليك
-        </Text>
+        <Box px={5}>
+          <Text
+            textAlign={"center"}
+            fontFamily="montserrat-bold"
+            color="gray.800"
+            fontSize={"2xl"}
+            mt={5}
+          >
+            {error.message}
+          </Text>
+          <Text
+            textAlign={"center"}
+            fontFamily="montserrat"
+            color="gray.500"
+            fontSize={"md"}
+            mt={5}
+          >
+            ستتحدث القائمة مباشرة اذا تم إرسال طلبات إضافة كمسمع إليك
+          </Text>
+        </Box>
       </Box>
     );
   }

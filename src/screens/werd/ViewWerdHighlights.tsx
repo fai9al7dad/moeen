@@ -12,10 +12,9 @@ import { RFValue } from "../../utils/RFValue";
 import { getWordByID } from "../../utils/sqlite/getWordById";
 import ActionButton from "../../components/general/ActionButton";
 import { updateWordColor } from "../../utils/sqlite/updateWordColor";
-import quran from "../../stores/Quran";
 import { MaterialIcons } from "@expo/vector-icons";
 import { inject, observer } from "mobx-react";
-import { observe } from "mobx";
+
 const ViewWerdHighlights = ({ store, route, navigation }) => {
   const {
     username,
@@ -35,6 +34,7 @@ const ViewWerdHighlights = ({ store, route, navigation }) => {
   const { currentWerdID: werdID } = store;
   const { width } = Dimensions.get("window");
   const [isAccepted, setIsAccepted] = useState(paramIsAccepted);
+
   const fetchWerdHighlight = React.useCallback(async () => {
     try {
       let res = await axios.get(`/api/highlight/werd-id/${werdID}`);
@@ -65,16 +65,17 @@ const ViewWerdHighlights = ({ store, route, navigation }) => {
       let color = mistakesColor[data[i].type];
       await updateWordColor(color, data[i].wordID);
     }
+
     try {
       await axios.post("/api/werd/accept-werd", {
         werdID: werdID.toString(),
       });
-      quran.initDataProvider();
       queryClient.refetchQueries("viewWirds");
+      setIsAccepted(true);
     } catch (e: any) {
       console.log("e", e.response.data);
     } finally {
-      setIsAccepted(true);
+      console.log("ss");
     }
   };
 

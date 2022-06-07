@@ -11,6 +11,7 @@ class Store {
   mistakesCounter = 0;
   warningsCounter = 0;
   counter = 0;
+
   //computed
   constructor() {
     makeObservable(this, {
@@ -22,6 +23,7 @@ class Store {
       mistakesCounter: observable,
       warningsCounter: observable,
       startWerd: action,
+      finishWerd: action,
       updateMistakesOrWarningsCounter: action,
     });
   }
@@ -60,7 +62,6 @@ class Store {
     setTimeout(async () => {
       try {
         let res = await axios.post("/api/highlight/add", payload);
-        console.log(res.data);
       } catch (e: any) {
         console.log(e.response.data);
       }

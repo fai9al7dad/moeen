@@ -14,7 +14,7 @@ const SelectPageNumber: React.FC<props> = React.memo(
     const [isInvalid, setIsInvalid] = useState(true);
     const [pageNumber, setPageNumber] = useState(1);
     const { scrollFunc } = useContext(QuranDataContext);
-    const isEven = data?.pageNumber % 2 === 0;
+    const isEven = data?.id % 2 === 0;
 
     useEffect(() => {
       setIsInvalid(false);
@@ -42,7 +42,7 @@ const SelectPageNumber: React.FC<props> = React.memo(
         />
 
         <Text fontSize={"xs"} fontWeight="bold" color={textColor}>
-          {data?.pageNumber}
+          {data?.id}
         </Text>
         <Modal
           isOpen={showPageSelectorModal}

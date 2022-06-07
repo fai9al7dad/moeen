@@ -13,12 +13,12 @@ import ListItem from "./atom/ListItem";
 const AsCorrector = () => {
   const navigation: any = useNavigation();
   const { width } = Dimensions.get("window");
-  const { isLoading, isError, data, error }: any = useQuery(
+  const { isError, data, error, isFetching }: any = useQuery(
     "asCorrector",
     fetchAsCorrector,
     { retry: 0 }
   );
-  if (isLoading) {
+  if (isFetching) {
     return (
       <Center w="100%" height="100%">
         <Spinner />

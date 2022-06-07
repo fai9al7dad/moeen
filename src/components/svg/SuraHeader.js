@@ -22,19 +22,20 @@ import Svg, { Circle, G, Line, Path } from "react-native-svg";
 </Box>; */
 }
 const SuraHeader = ({ chapterCode }) => {
-  const { width } = Dimensions.get("window");
+  const { width, height } = Dimensions.get("window");
   let chapterCodes = ("00" + chapterCode).slice(-3);
+  let customHeight = Platform.OS === "ios" ? height * 0.05 : 35;
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"
       width={width * 0.99}
-      height={60}
+      height={customHeight}
       viewBox="0 0 465.768 50.549"
       style={{ position: "relative" }}
     >
       <Box
-        width={width}
-        height={"60px"}
+        width={width * 0.99}
+        height={customHeight}
         justifyContent={"center"}
         alignItems="center"
       >

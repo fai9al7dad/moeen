@@ -4,6 +4,16 @@ mistakes and warnings = [E]
 
 # To Do's
 
+## account
+
+- [ ] add quick user adding, with new user being a reciter for auth
+
+## werd
+
+- [ ] make accepting werds is by device and user, not only by account.
+
+# quran part
+
 ## select surah
 
 - [x] replace flatlist with recylcerListView -> optimized flatlist

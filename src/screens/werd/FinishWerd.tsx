@@ -13,7 +13,6 @@ const FinishWerd = ({ navigation }) => {
       isStart: false,
       werdID: store.werdID,
     });
-    store.finishWerd();
   };
   return (
     <Box h={"100%"} px={4} justifyContent="space-between">

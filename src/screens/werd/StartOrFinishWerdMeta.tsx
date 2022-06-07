@@ -8,9 +8,10 @@ import { Dimensions } from "react-native";
 import axios from "axios";
 import { useQueryClient } from "react-query";
 import { inject, observer } from "mobx-react";
+import store from "../../stores/Store";
 
-const StartOrFinishWerdMeta = ({ store, route, navigation }) => {
-  const { isStart, werdID } = route.params;
+const StartOrFinishWerdMeta = ({ route, navigation }) => {
+  const { isStart, werdID, duoID, username } = route.params;
   const { height } = Dimensions.get("window");
   let defaultObj = {
     startSurah: "",
@@ -45,6 +46,12 @@ const StartOrFinishWerdMeta = ({ store, route, navigation }) => {
 
     try {
       let res = await axios.post("/api/werd/add-werd-meta", payload);
+      if (isStart) {
+        store.startWerd(werdID, duoID, username);
+      }
+      if (!isStart) {
+        store.finishWerd();
+      }
 
       queryClient.refetchQueries("viewWirds");
       let title = `${payload.startSurah ? payload.startSurah : ""} ${
@@ -113,7 +120,15 @@ const StartOrFinishWerdMeta = ({ store, route, navigation }) => {
             onPress={handleSubmit(onSubmit)}
           />
           <ActionButton
-            onPress={() => navigation.navigate("Quran")}
+            onPress={() => {
+              if (isStart) {
+                store.startWerd(werdID, duoID, username);
+              }
+              if (!isStart) {
+                store.finishWerd();
+              }
+              navigation.navigate("Quran");
+            }}
             text="تخطي"
             style={{
               width: "48%",

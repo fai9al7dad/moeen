@@ -7,7 +7,7 @@ interface props {
   index: number;
   title: string;
   id: number;
-  isWirdAccepted: boolean;
+  isWirdAccepted?: boolean;
 }
 const ListItem: React.FC<props> = React.memo(
   ({ itemHeight, onPress, index, title, id, isWirdAccepted }) => {

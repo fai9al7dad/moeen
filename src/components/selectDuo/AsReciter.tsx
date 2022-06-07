@@ -20,13 +20,13 @@ const fetchAsReciter = async () => {
 };
 
 const AsReciter = () => {
-  const { isLoading, isError, data, error }: any = useQuery(
+  const { isError, data, error, isFetching }: any = useQuery(
     "asReciter",
     fetchAsReciter
   );
   const { width } = Dimensions.get("window");
   const navigation: any = useNavigation();
-  if (isLoading) {
+  if (isFetching) {
     return (
       <Center w="100%" height="100%">
         <Spinner />

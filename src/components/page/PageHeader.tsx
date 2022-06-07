@@ -9,13 +9,14 @@ import { Entypo } from "@expo/vector-icons";
 import RenderMistakesAndWarnings from "./components/RenderMistakesAndWarnings";
 import HeaderDuoOrWerd from "./components/HeaderDuoOrWerd";
 import { quranArray, quranRow } from "../../types/quran.types";
+import { RFValue } from "../../utils/RFValue";
 const PageHeader: React.FC<quranArray> = React.memo(
   ({ data }) => {
     const navigation: any = useNavigation();
     const textColor = "#ae8f74";
-
+    let meta = data?.lines[0]?.words[0];
     return (
-      <SafeAreaView>
+      <Box mt={RFValue(8)}>
         <HStack
           justifyContent={"space-between"}
           alignItems="center"
@@ -26,7 +27,7 @@ const PageHeader: React.FC<quranArray> = React.memo(
             <HeaderDuoOrWerd />
             <Pressable onPress={() => navigation.navigate("SelectSurah")}>
               <Text fontSize={"xl"} fontFamily="surahname" color={textColor}>
-                {data[0].chapterCode}surah
+                {meta.chapterCode}surah
               </Text>
             </Pressable>
             <Box
@@ -44,9 +45,9 @@ const PageHeader: React.FC<quranArray> = React.memo(
             <HStack flex={1} justifyContent="center" alignItems={"center"}>
               <RenderMistakesAndWarnings
                 textColor={textColor}
-                pageNumber={data[0].pageNumber}
+                pageNumber={data.id}
               />
-              <SelectPageNumber data={data[0]} textColor={textColor} />
+              <SelectPageNumber data={data} textColor={textColor} />
             </HStack>
           </Box>
 
@@ -63,7 +64,7 @@ const PageHeader: React.FC<quranArray> = React.memo(
               fontWeight="bold"
               fontFamily={"montserrat"}
             >
-              الجزء {data[0]?.juzNumber}
+              الجزء {data?.juzNumber}
             </Text>
 
             <Text
@@ -72,15 +73,15 @@ const PageHeader: React.FC<quranArray> = React.memo(
               fontWeight="bold"
               fontFamily={"montserrat"}
             >
-              الحزب {data[0]?.hizbNumber}
+              الحزب {data?.hizbNumber}
             </Text>
           </VStack>
         </HStack>
-      </SafeAreaView>
+      </Box>
     );
   },
   (p, n) => {
-    return p.data[0].pageNumber === n.data[0].pageNumber;
+    return p.data.id === n.data.id;
   }
 );
 

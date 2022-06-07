@@ -1,124 +1,111 @@
 import { Box, Text, ZStack } from "native-base";
-import React from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import React, { useEffect, useRef } from "react";
+import { Dimensions, Platform, StyleSheet } from "react-native";
+import quran from "../../../stores/Quran";
 import { quranArray } from "../../../types/quran.types";
 import { RFValue } from "../../../utils/RFValue";
 import SuraHeader from "../../svg/SuraHeader";
 import Word from "./Word";
 
-const RenderWords: React.FC<quranArray> = React.memo(
+{
+  /* <Text
+          fontFamily={`p${data[0]?.pageNumber}`}
+          fontSize={RFValue(19)}
+          lineHeight={RFValue(38)}
+          textAlign="center"
+          color="tertiary.600"
+          // shadow={1}
+          style={styles.customShadow}
+        ></Text> */
+}
+const RenderWords: React.FC<any> = React.memo(
   (props) => {
     const { data } = props;
-    const { width } = Dimensions.get("window");
-    return (
-      <Text
-        fontFamily={`p${data[0]?.pageNumber}`}
-        fontSize={RFValue(19)}
-        lineHeight={RFValue(38)}
-        textAlign="center"
-        // shadow={1}
-        style={styles.customShadow}
-      >
-        {data.map((item, index) => {
-          let curLineNum = data[index]?.lineNumber;
-          // if last item this will return undefined
-          let aftLineNum = data[index + 1]?.lineNumber;
-          let lineChange = curLineNum !== aftLineNum;
-          if (lineChange) {
-            if (item.charType === "end") {
-              return (
-                <>
-                  <Text
-                    key={item.wordID}
-                    shadow={0}
-                    fontSize={"25"}
-                    color="tertiary.600"
-                  >
-                    {item.text}
-                  </Text>
-                  {"\n"}
-                </>
-              );
-            }
-            if (item.isNewChapter) {
-              if (item.isBismillah && item.pageNumber !== 187) {
-                let condition = item.lineNumber === 1;
-                return (
-                  <>
-                    <Text
-                      key={item.wordID}
-                      fontSize={condition ? "3xl" : "2xl"}
-                      textAlign="center"
-                    >
-                      <Box
-                        width={condition ? width * 0.26 : width * 0.3}
-                        height={5}
-                      ></Box>
-                      <Text>﷽</Text>
-                      {"\n"}
-                      {condition ? (
-                        <Box
-                          width={condition ? width * 0.26 : width * 0.3}
-                          height={4}
-                        ></Box>
-                      ) : null}
-                    </Text>
-                  </>
-                );
-              }
+    const { width, height } = Dimensions.get("window");
+    let isIos = Platform.OS === "ios";
 
-              return (
-                <>
-                  <SuraHeader
-                    key={item.wordID}
-                    chapterCode={item.chapterCode}
-                  />
-                  {"\n"}
-                </>
-              );
-            }
-            return (
-              <>
-                <Word
-                  isStartOfLine={false}
-                  key={item.wordID}
-                  text={item.text}
-                  color={item.color}
-                  id={item.wordID}
-                  index={index}
-                  pageNumber={data[0]?.pageNumber}
-                />
-                {"\n"}
-              </>
-            );
-          }
-          // if not line change
-          if (item.charType === "end") {
-            return (
-              <>
-                <Text key={item.wordID} color="tertiary.600" fontSize={"25"}>
-                  {item.text}
-                </Text>
-              </>
-            );
-          }
+    return (
+      <Box
+        flexDirection={"row"}
+        flexWrap="wrap"
+        width={width}
+        justifyContent="center"
+        alignItems={"center"}
+      >
+        {data.lines.map((line) => {
           return (
-            <Word
-              isStartOfLine={true}
-              key={item.wordID}
-              text={item.text}
-              color={item.color}
-              id={item.wordID}
-              index={index}
-              pageNumber={data[0]?.pageNumber}
-            />
+            <Box
+              flexDirection="row"
+              justifyContent="center"
+              alignItems={"center"}
+              w={"100%"}
+            >
+              <Text
+                fontFamily={"p" + data.id} // this line causes leak adding p + number. static doesnt
+                fontSize={isIos ? RFValue(19) : RFValue(20)}
+                // lineHeight={RFValue(38)}
+                pt={!line.words[0].isNewChapter ? "3" : "0"}
+                // py={0.5}
+                style={isIos ? styles.customShadow : {}}
+              >
+                {line.words.map((word, index) => {
+                  if (word.isBismillah && line.pageID !== 187) {
+                    return (
+                      <Text
+                        fontFamily={"p1"}
+                        fontSize="2xl"
+                        lineHeight={RFValue(41)}
+                      >
+                        ﱁﱂﱃﱄ
+                      </Text>
+                    );
+                  }
+                  if (word.isNewChapter) {
+                    return (
+                      <SuraHeader
+                        key={word.id}
+                        chapterCode={word.chapterCode}
+                      />
+                    );
+                  }
+                  if (word.charType === "end") {
+                    return (
+                      <>
+                        <Text
+                          key={word.id}
+                          color="tertiary.600"
+                          fontSize={"25"}
+                          fontFamily={`p${line?.pageID}`}
+                        >
+                          {word.text}
+                        </Text>
+                      </>
+                    );
+                  }
+
+                  return (
+                    <Word
+                      isStartOfLine={index === line.words.length - 1}
+                      key={word.id}
+                      id={word.id}
+                      text={word.text}
+                      // color={found ? found.color : word.color} // if found get color from db, else get default
+                      index={index}
+                      lineNumber={word?.lineNumber}
+                      pageNumber={line?.pageID}
+                      chapterCode={word?.chapterCode}
+                    />
+                  );
+                })}
+              </Text>
+            </Box>
           );
         })}
-      </Text>
+      </Box>
     );
   },
   (p, n) => {
-    return p.data[0].pageNumber === n.data[0].pageNumber;
+    return p.data.id === n.data.id;
   }
 );
 export default RenderWords;
