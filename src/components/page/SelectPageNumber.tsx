@@ -41,7 +41,12 @@ const SelectPageNumber: React.FC<props> = React.memo(
           }}
         />
 
-        <Text fontSize={"xs"} fontWeight="bold" color={textColor}>
+        <Text
+          fontSize={"xs"}
+          fontWeight="bold"
+          color={textColor}
+          allowFontScaling={false}
+        >
           {data?.id}
         </Text>
         <Modal

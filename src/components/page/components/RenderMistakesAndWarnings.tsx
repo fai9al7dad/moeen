@@ -32,7 +32,12 @@ const RenderMistakesAndWarnings: React.FC<props> = ({
               rounded="full"
             />
             <Box>
-              <Text fontSize={"xs"} fontWeight="bold" color={textColor}>
+              <Text
+                fontSize={"xs"}
+                fontWeight="bold"
+                color={textColor}
+                allowFontScaling={false}
+              >
                 {curDataFromStore.warnings}
               </Text>
             </Box>
@@ -50,7 +55,12 @@ const RenderMistakesAndWarnings: React.FC<props> = ({
               rounded="full"
             />
             <Box>
-              <Text fontSize={"xs"} fontWeight="bold" color={textColor}>
+              <Text
+                fontSize={"xs"}
+                fontWeight="bold"
+                color={textColor}
+                allowFontScaling={false}
+              >
                 {curDataFromStore.mistakes}
               </Text>
             </Box>

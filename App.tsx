@@ -1,11 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  extendTheme,
-  NativeBaseProvider,
-  useToast,
-} from "native-base";
+import { Box, extendTheme, NativeBaseProvider } from "native-base";
 import Routes from "./src/Routes";
 import { fontCon } from "./src/utils/fonts/fontConfigNative";
 import * as SplashScreen from "expo-splash-screen";

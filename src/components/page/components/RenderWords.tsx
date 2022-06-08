@@ -41,12 +41,12 @@ const RenderWords: React.FC<any> = React.memo(
               w={"100%"}
             >
               <Text
-                fontFamily={"p" + data.id} // this line causes leak adding p + number. static doesnt
+                fontFamily={"p" + data.id} // this line causes leak
                 fontSize={isIos ? RFValue(19) : RFValue(20)}
                 px={0.5}
-                pt={!line.words[0].isNewChapter ? "3" : "0"}
-                // lineHeight={RFValue(38)}
-                // py={0.5}
+                allowFontScaling={false}
+                // pt={!line.words[0].isNewChapter ? "3" : "0"}
+                lineHeight={RFValue(39)}
                 style={isIos ? styles.customShadow : {}}
               >
                 {line.words.map((word, index) => {
@@ -113,14 +113,17 @@ export default RenderWords;
 
 const styles = StyleSheet.create({
   customShadow: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 0.2,
-    elevation: 2,
+    textShadowColor: "#000",
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 0.4,
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 0,
+    // },
+    // shadowOpacity: 1,
+    // shadowRadius: 0.2,
+    // elevation: 2,
   },
 });
 

@@ -74,7 +74,7 @@ const ViewWerdsComp = () => {
           <Text fontFamily={"montserrat-bold"} color="tertiary.600">
             {username}
           </Text>{" "}
-          {type === "asCorrector" ? "كمصحح" : "كمسمع"}
+          {type === "asCorrector" ? "كمعلم" : "كطالب"}
         </Text>
         {type === "asCorrector" ? (
           <ActionButton

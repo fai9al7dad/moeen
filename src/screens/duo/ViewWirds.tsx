@@ -19,7 +19,6 @@ const ViewWirds = ({ route, navigation }) => {
   const fetchWirds = React.useCallback(async () => {
     try {
       let res = await axios.get(`/api/werd/duo-id/${duoID}`);
-      console.log(res.data);
 
       return res.data;
     } catch (e: any) {
@@ -65,7 +64,7 @@ const ViewWirds = ({ route, navigation }) => {
           <Text fontFamily={"montserrat-bold"} color="tertiary.600">
             {username}
           </Text>{" "}
-          {type === "asCorrector" ? "كمصحح" : "كمسمع"}
+          {type === "asCorrector" ? "كمعلم" : "كطالب"}
         </Text>
         {type === "asCorrector" ? (
           <ActionButton
@@ -82,6 +81,14 @@ const ViewWirds = ({ route, navigation }) => {
   }
 
   const renderItem = ({ item, index }) => {
+    let createdAtD = new Date(item.createdAt);
+    let createdAtDate =
+      createdAtD.getFullYear() +
+      "-" +
+      createdAtD.getDate() +
+      "-" +
+      createdAtD.getDay();
+
     let title = "";
     if (item.startSurah !== null) {
       title = `${item.startSurah ? item.startSurah : ""} ${
@@ -90,7 +97,7 @@ const ViewWirds = ({ route, navigation }) => {
         item.endVerseNumber ? item.endVerseNumber : ""
       }`;
     } else {
-      title = item.id.toString();
+      title = createdAtDate;
     }
     const onPress = () => {
       store.currentWerdID = item.id;
@@ -111,6 +118,7 @@ const ViewWirds = ({ route, navigation }) => {
         index={index}
         title={title}
         itemHeight={item_height}
+        createdAtDate={createdAtDate}
         isWirdAccepted={item.isAccepted}
         onPress={onPress}
       />

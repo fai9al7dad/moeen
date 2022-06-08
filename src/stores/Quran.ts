@@ -47,29 +47,30 @@ class Quran {
       return r1 !== r2;
     }).cloneWithRows(QURAN.pages);
 
-    let pageMistakes: any = await colorsModel.getPagesMistakesAndWarnings(
-      mistakesColor.mistake
-    );
-    let pageWarnings: any = await colorsModel.getPagesMistakesAndWarnings(
-      mistakesColor.warning
-    );
+    if (!isClone) {
+      let pageMistakes: any = await colorsModel.getPagesMistakesAndWarnings(
+        mistakesColor.mistake
+      );
+      let pageWarnings: any = await colorsModel.getPagesMistakesAndWarnings(
+        mistakesColor.warning
+      );
 
-    if (pageMistakes.length > 0) {
-      for (let i = 0; i < pageMistakes.length; i++) {
-        if (pageMistakes[i]?.mistakes > 0) {
-          data._data[pageMistakes[i].pageNumber - 1]["mistakes"] = isClone
-            ? 0
-            : pageMistakes[i]?.mistakes;
+      if (pageMistakes.length > 0) {
+        for (let i = 0; i < pageMistakes.length; i++) {
+          data._data[pageMistakes[i].pageNumber - 1]["mistakes"] =
+            pageMistakes[i]?.mistakes;
         }
       }
-    }
-    if (pageWarnings.length > 0) {
-      for (let i = 0; i < pageWarnings.length; i++) {
-        if (pageWarnings[i]?.warnings > 0) {
-          data._data[pageWarnings[i].pageNumber - 1]["warnings"] = isClone
-            ? 0
-            : pageWarnings[i]?.warnings;
+      if (pageWarnings.length > 0) {
+        for (let i = 0; i < pageWarnings.length; i++) {
+          data._data[pageWarnings[i].pageNumber - 1]["warnings"] =
+            pageWarnings[i]?.warnings;
         }
+      }
+    } else {
+      for (let i = 0; i < 604; i++) {
+        data._data[i].warnings = 0;
+        data._data[i].mistakes = 0;
       }
     }
     runInAction(() => {

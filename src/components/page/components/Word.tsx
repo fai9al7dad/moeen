@@ -36,7 +36,6 @@ const Word: React.FC<props> = React.memo(
     if (!store.isWerd) {
       found = quran.wordsColorsMistakes.find((e: any) => e.wordID === id);
     }
-
     const [wordColor, setWordColor] = useState(
       found?.color ? found?.color : "black"
     );
@@ -128,6 +127,7 @@ const Word: React.FC<props> = React.memo(
           onPress={() => highlightWord(id)}
           suppressHighlighting
           zIndex={1}
+          // lineHeight={RFValue(39.5)}
         >
           {text}
         </Text>

@@ -26,7 +26,12 @@ const PageHeader: React.FC<any> = React.memo(
           <HStack flex={1} justifyContent="flex-start" alignItems={"center"}>
             <HeaderDuoOrWerd />
             <Pressable onPress={() => navigation.navigate("SelectSurah")}>
-              <Text fontSize={"xl"} fontFamily="surahname" color={textColor}>
+              <Text
+                fontSize={"xl"}
+                fontFamily="surahname"
+                color={textColor}
+                allowFontScaling={false}
+              >
                 {meta.chapterCode}surah
               </Text>
             </Pressable>
@@ -62,6 +67,7 @@ const PageHeader: React.FC<any> = React.memo(
               mr={2}
               color={textColor}
               fontWeight="bold"
+              allowFontScaling={false}
               fontFamily={"montserrat"}
             >
               الجزء {data?.juzNumber}
@@ -72,6 +78,7 @@ const PageHeader: React.FC<any> = React.memo(
               color={textColor}
               fontWeight="bold"
               fontFamily={"montserrat"}
+              allowFontScaling={false}
             >
               الحزب {data?.hizbNumber}
             </Text>

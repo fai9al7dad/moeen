@@ -8,9 +8,10 @@ interface props {
   title: string;
   id: number;
   isWirdAccepted?: boolean;
+  createdAtDate: string;
 }
 const ListItem: React.FC<props> = React.memo(
-  ({ itemHeight, onPress, index, title, id, isWirdAccepted }) => {
+  ({ itemHeight, onPress, index, title, id, createdAtDate }) => {
     return (
       <Pressable
         key={id}
@@ -44,14 +45,25 @@ const ListItem: React.FC<props> = React.memo(
             >
               {title.length > 25 ? title.slice(0, 25) + "..." : title}
             </Text>
-            <Text
-              fontFamily={"montserrat"}
-              fontSize={"10"}
-              color={"gray.400"}
-              textAlign="left"
-            >
-              رقم المعرف: {id}
-            </Text>
+            {createdAtDate ? (
+              <Text
+                fontFamily={"montserrat"}
+                fontSize={"10"}
+                color={"gray.400"}
+                textAlign="left"
+              >
+                التاريخ: {createdAtDate}
+              </Text>
+            ) : (
+              <Text
+                fontFamily={"montserrat"}
+                fontSize={"10"}
+                color={"gray.400"}
+                textAlign="left"
+              >
+                رقم المعرف: {id}
+              </Text>
+            )}
           </Box>
         </Box>
         <Box flexDirection={"row"} alignItems="center">
