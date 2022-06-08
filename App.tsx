@@ -21,7 +21,6 @@ import * as Font from "expo-font";
 
 I18nManager.forceRTL(true);
 I18nManager.allowRTL(true);
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 const allFonts = require("./src/utils/fonts/allFontsGlyps");
 function cacheFonts(fonts) {
   return fonts.map((font) => Font.loadAsync(font));
@@ -30,7 +29,8 @@ const App = React.memo(() => {
   axios.defaults.headers.post["Content-Type"] = "application/json";
   axios.defaults.headers.post["Accept"] = "application/json";
   axios.defaults.withCredentials = true;
-  axios.defaults.baseURL = "http://192.168.1.51:8000";
+  axios.defaults.baseURL =
+    "http://74bb-2001-16a2-fad5-7d00-a0c0-7c17-8d7-bf02.eu.ngrok.io";
   // let [fontsLoaded] = useFonts(fonts);
   const { width, height } = Dimensions.get("window");
   const [appIsReady, setAppIsReady] = useState(false);
@@ -46,6 +46,7 @@ const App = React.memo(() => {
           // Keep the splash screen visible while we fetch resources
           await SplashScreen.preventAutoHideAsync();
           await colorsModel.createTable();
+          // await colorsModel.alterTable();
           const fontAssets = cacheFonts([allFonts.allFonts]);
           await Promise.all(fontAssets);
           // await colorsModel.inserColor({
@@ -64,9 +65,9 @@ const App = React.memo(() => {
           let color = await colorsModel.getAllWords();
 
           quran.fillWordsColorsMistakes(color);
+          await SplashScreen.hideAsync();
 
           setAppIsReady(true);
-          await SplashScreen.hideAsync();
         } catch (e) {
           console.warn("e", e);
         } finally {

@@ -72,13 +72,13 @@ const Register = ({ navigation }) => {
     defaultValues: {
       username: "",
       password: "",
+
+      email: "",
       confirmPassword: "",
     },
   });
 
   const onSubmit = (data) => {
-    console.log("called submit");
-
     axios
       .post("api/auth/register", data)
       .then((res) => {
@@ -155,6 +155,27 @@ const Register = ({ navigation }) => {
                 fontSize={"xs"}
               >
                 {errors.username.message}
+              </Text>
+            )}
+            <CustomInput
+              name={"email"}
+              label={"البريد الإلكتروني"}
+              control={control}
+              rules={{
+                required: {
+                  value: true,
+                  message: "البريد الإلكتروني مطلوب",
+                },
+              }}
+            />
+            {errors.email && (
+              <Text
+                color="red.400"
+                textAlign={"left"}
+                fontFamily="montserrat"
+                fontSize={"xs"}
+              >
+                {errors.email.message}
               </Text>
             )}
             <CustomInput

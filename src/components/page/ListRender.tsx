@@ -1,13 +1,11 @@
-import React, { useCallback, useContext, useMemo, useRef } from "react";
+import React, { useMemo } from "react";
 
 import { LayoutProvider, RecyclerListView } from "recyclerlistview";
 import { Dimensions } from "react-native";
 import RenderPage from "./RenderPage";
-import { useNavigation } from "@react-navigation/native";
 import { inject, observer } from "mobx-react";
 import quran from "../../stores/Quran";
 import { quranArray } from "../../types/quran.types";
-import { Text } from "native-base";
 
 function RenderList({ store, listRef, width, height }: any) {
   const layoutProvider = useMemo(() => {

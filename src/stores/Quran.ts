@@ -53,18 +53,23 @@ class Quran {
     let pageWarnings: any = await colorsModel.getPagesMistakesAndWarnings(
       mistakesColor.warning
     );
-    for (let i = 0; i < pageMistakes.length; i++) {
-      if (pageMistakes[i]?.mistakes > 0) {
-        data._data[pageMistakes[i].pageNumber - 1]["mistakes"] = isClone
-          ? 0
-          : pageMistakes[i]?.mistakes;
+
+    if (pageMistakes.length > 0) {
+      for (let i = 0; i < pageMistakes.length; i++) {
+        if (pageMistakes[i]?.mistakes > 0) {
+          data._data[pageMistakes[i].pageNumber - 1]["mistakes"] = isClone
+            ? 0
+            : pageMistakes[i]?.mistakes;
+        }
       }
     }
-    for (let i = 0; i < pageWarnings.length; i++) {
-      if (pageWarnings[i]?.warnings > 0) {
-        data._data[pageWarnings[i].pageNumber - 1]["warnings"] = isClone
-          ? 0
-          : pageWarnings[i]?.warnings;
+    if (pageWarnings.length > 0) {
+      for (let i = 0; i < pageWarnings.length; i++) {
+        if (pageWarnings[i]?.warnings > 0) {
+          data._data[pageWarnings[i].pageNumber - 1]["warnings"] = isClone
+            ? 0
+            : pageWarnings[i]?.warnings;
+        }
       }
     }
     runInAction(() => {

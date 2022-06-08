@@ -1,6 +1,6 @@
 import React from "react";
 import { HStack, VStack, Text, Box, Pressable } from "native-base";
-import { SafeAreaView } from "react-native";
+import { Platform, SafeAreaView, StyleSheet } from "react-native";
 import { mistakesColor } from "../../assets/conts/mistakes";
 import { inject, observer } from "mobx-react";
 import { useNavigation } from "@react-navigation/native";
@@ -10,13 +10,13 @@ import RenderMistakesAndWarnings from "./components/RenderMistakesAndWarnings";
 import HeaderDuoOrWerd from "./components/HeaderDuoOrWerd";
 import { quranArray, quranRow } from "../../types/quran.types";
 import { RFValue } from "../../utils/RFValue";
-const PageHeader: React.FC<quranArray> = React.memo(
-  ({ data }) => {
+const PageHeader: React.FC<any> = React.memo(
+  ({ data }: any) => {
     const navigation: any = useNavigation();
     const textColor = "#ae8f74";
     let meta = data?.lines[0]?.words[0];
     return (
-      <Box mt={RFValue(8)}>
+      <SafeAreaView style={styles.droidSafeArea}>
         <HStack
           justifyContent={"space-between"}
           alignItems="center"
@@ -77,12 +77,16 @@ const PageHeader: React.FC<quranArray> = React.memo(
             </Text>
           </VStack>
         </HStack>
-      </Box>
+      </SafeAreaView>
     );
   },
   (p, n) => {
     return p.data.id === n.data.id;
   }
 );
-
+const styles = StyleSheet.create({
+  droidSafeArea: {
+    paddingTop: Platform.OS === "android" ? 25 : 0,
+  },
+});
 export default PageHeader;

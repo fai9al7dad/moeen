@@ -44,7 +44,7 @@ const AsReciter = () => {
           fontSize={"2xl"}
           mt={5}
         >
-          {error.message}
+          {/* {error.message} */}
         </Text>
         <Text
           textAlign={"center"}
@@ -53,7 +53,7 @@ const AsReciter = () => {
           fontSize={"md"}
           mt={5}
         >
-          هنا تظهر الأوراد التي قد سمعتها مع شخص آخر كمسمع فقط
+          لا يوجد لديك معلمين
         </Text>
       </Box>
     );

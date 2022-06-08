@@ -36,7 +36,7 @@ const AsCorrector = () => {
           fontSize={"2xl"}
           mt={5}
         >
-          {error.message}
+          {/* {error.message} */}
         </Text>
         <Text
           textAlign={"center"}
@@ -45,10 +45,10 @@ const AsCorrector = () => {
           fontSize={"md"}
           mt={5}
         >
-          هنا تظهر الأوراد التي قد سمعتها مع شخص آخر كمصحح فقط
+          لا يوجد لديك طلاب
         </Text>
         <ActionButton
-          text="إضافة مسمع"
+          text="إضافة طالب"
           onPress={() => navigation.navigate("SearchDuo")}
           style={{
             width: "90%",

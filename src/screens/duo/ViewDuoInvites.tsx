@@ -79,7 +79,7 @@ const ViewDuoInvites = ({ jumpTo }) => {
             fontSize={"2xl"}
             mt={5}
           >
-            {error.message}
+            {/* {error.message} */}
           </Text>
           <Text
             textAlign={"center"}
@@ -88,7 +88,7 @@ const ViewDuoInvites = ({ jumpTo }) => {
             fontSize={"md"}
             mt={5}
           >
-            ستتحدث القائمة مباشرة اذا تم إرسال طلبات إضافة كمسمع إليك
+            ستتحدث القائمة مباشرة اذا تم إرسال إليك طلبات إضافة كمعلم
           </Text>
         </Box>
       </Box>

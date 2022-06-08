@@ -6,7 +6,7 @@ import SelectSurah from "./screens/SelectSurah";
 import Quran from "./screens/Quran";
 import Register from "./screens/auth/Register";
 import Login from "./screens/auth/Login";
-
+import { Ionicons } from "@expo/vector-icons";
 import { SelectDuo } from "./screens/duo/SelectDuo";
 import SearchDuo from "./screens/duo/SearchDuo";
 import ViewWirds from "./screens/duo/ViewWirds";
@@ -14,6 +14,10 @@ import FinishWerd from "./screens/werd/FinishWerd";
 import ViewWerdHighlights from "./screens/werd/ViewWerdHighlights";
 import WerdMeta from "./screens/werd/WerdMeta";
 import StartOrFinishWerdMeta from "./screens/werd/StartOrFinishWerdMeta";
+import { Button } from "react-native";
+import { Pressable } from "native-base";
+import { Settings } from "./screens/settings";
+import AboutApp from "./screens/settings/AboutApp";
 // <RootStackParamList>
 const Stack = createNativeStackNavigator();
 
@@ -52,7 +56,7 @@ const HomeStack = () => {
         }}
       />
       <Stack.Screen
-        options={{
+        options={({ navigation }) => ({
           contentStyle: { backgroundColor: "#fff8ed" },
           headerStyle: { backgroundColor: "#fff8ed" },
           headerBackTitle: "المصحف",
@@ -60,10 +64,43 @@ const HomeStack = () => {
           headerTitle: "اختر الثنائي",
           headerTintColor: "#047857",
           headerBackTitleStyle: { fontFamily: "montserrat" },
+          headerRight: () => (
+            <Pressable onPress={() => navigation.navigate("Settings")}>
+              <Ionicons name="ios-cog" size={24} color="#047857" />
+            </Pressable>
+          ),
           // headerShown: false,
-        }}
+        })}
         name="SelectDuo"
         component={SelectDuo}
+      />
+      <Stack.Screen
+        options={({ navigation }) => ({
+          contentStyle: { backgroundColor: "#fff8ed" },
+          headerStyle: { backgroundColor: "#fff8ed" },
+          headerBackTitle: "الثنائيات",
+          headerTitleStyle: { fontFamily: "montserrat" },
+          headerTitle: "الإعدادات",
+          headerTintColor: "#047857",
+          headerBackTitleStyle: { fontFamily: "montserrat" },
+          // headerShown: false,
+        })}
+        name="Settings"
+        component={Settings}
+      />
+      <Stack.Screen
+        options={{
+          contentStyle: { backgroundColor: "#fff8ed" },
+          headerStyle: { backgroundColor: "#fff8ed" },
+          headerBackTitle: "الإعدادات",
+          headerTitleStyle: { fontFamily: "montserrat" },
+          headerTitle: "عن التطبيق",
+          headerTintColor: "#047857",
+          headerBackTitleStyle: { fontFamily: "montserrat" },
+          // headerShown: false
+        }}
+        name="AboutApp"
+        component={AboutApp}
       />
       <Stack.Screen
         options={{

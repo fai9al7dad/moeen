@@ -123,7 +123,7 @@ const SearchDuo = () => {
   };
 
   return (
-    <Pressable flex={1} onPress={Keyboard.dismiss} px={5}>
+    <Pressable flex={1} onPress={Keyboard.dismiss} px={5} mt={5}>
       {toast?.show ? (
         <ToastAlert
           type={toast.type}

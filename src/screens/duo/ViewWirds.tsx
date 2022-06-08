@@ -19,6 +19,7 @@ const ViewWirds = ({ route, navigation }) => {
   const fetchWirds = React.useCallback(async () => {
     try {
       let res = await axios.get(`/api/werd/duo-id/${duoID}`);
+      console.log(res.data);
 
       return res.data;
     } catch (e: any) {

@@ -40,23 +40,23 @@ export class ColorsModel {
     });
   }
 
-  // alterTable() {
-  //   return new Promise(async (resolve, reject) => {
-  //     let query = `ALTER TABLE ${TABLES.COLORS_WORDS_MAP}
-  //           ADD pageNumber INTEGER
-  //     `;
-  //     await this._db.transaction((tx) => {
-  //       tx.executeSql(
-  //         query,
-  //         [],
-  //         (_, s) => {
-  //           resolve("created success");
-  //         },
-  //         this.errorCB
-  //       );
-  //     });
-  //   });
-  // }
+  alterTable() {
+    return new Promise(async (resolve, reject) => {
+      let query = `ALTER TABLE ${TABLES.COLORS_WORDS_MAP}
+            ADD chapterCode TEXT
+      `;
+      await this._db.transaction((tx) => {
+        tx.executeSql(
+          query,
+          [],
+          (_, s) => {
+            resolve("created success");
+          },
+          this.errorCB
+        );
+      });
+    });
+  }
   getAllWords() {
     return new Promise(async (resolve, reject) => {
       let query = `select * from ${TABLES.COLORS_WORDS_MAP}`;
@@ -84,22 +84,23 @@ export class ColorsModel {
           insert into ${TABLES.COLORS_WORDS_MAP}
           (color,wordID,chapterCode,pageNumber)
           values
-          (?,?,?,?)
+          ('${color}',${wordID},'${chapterCode}',${pageNumber})
         `;
       let updateQuery = `
           UPDATE ${TABLES.COLORS_WORDS_MAP}
-          set color = ?
-          where wordID = ?
+          set color = '${color}'
+          where wordID = ${wordID}
         `;
       this._db.transaction((tx) => {
         tx.executeSql(
           searchQuery,
-          [wordID, color],
+          [wordID],
           (_, s) => {
             const rows = s.rows._array;
             tx.executeSql(
               rows.length > 0 ? updateQuery : insertQuery,
-              [color, wordID, chapterCode, pageNumber],
+              [],
+              // [color, wordID, chapterCode, pageNumber],
               (_, s) => {
                 const rows = s.rows._array;
 
@@ -151,7 +152,7 @@ export class ColorsModel {
         type = "warnings";
       }
       let query = `
-         select count(*) as ${type},pageNumber from ${TABLES.COLORS_WORDS_MAP}
+         select pageNumber,count(*) as ${type} from ${TABLES.COLORS_WORDS_MAP}
         where color = ?
         group by pageNumber
         `;

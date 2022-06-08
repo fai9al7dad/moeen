@@ -128,7 +128,6 @@ const Word: React.FC<props> = React.memo(
           onPress={() => highlightWord(id)}
           suppressHighlighting
           zIndex={1}
-          // pt={15}
         >
           {text}
         </Text>
@@ -146,7 +145,7 @@ const Word: React.FC<props> = React.memo(
               }}
               animate={{
                 translateY: 0,
-                translateX: !isStartOfLine ? 0 : 10,
+                translateX: Platform.OS === "android" ? 30 : 0,
                 scale: 1,
                 opacity: 1,
                 transition: {

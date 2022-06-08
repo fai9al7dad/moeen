@@ -12,7 +12,7 @@ const RenderPage: React.FC<props> = React.memo(({ data, width, height }) => {
   return (
     <Box height={height} width={width}>
       <PageHeader data={data} />
-      <Box justifyContent="center" alignItems={"center"} height={"90%"}>
+      <Box justifyContent="center" alignItems={"center"} height={"87%"}>
         <RenderWords data={data} />
       </Box>
     </Box>

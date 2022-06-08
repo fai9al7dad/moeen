@@ -43,8 +43,9 @@ const RenderWords: React.FC<any> = React.memo(
               <Text
                 fontFamily={"p" + data.id} // this line causes leak adding p + number. static doesnt
                 fontSize={isIos ? RFValue(19) : RFValue(20)}
-                // lineHeight={RFValue(38)}
+                px={0.5}
                 pt={!line.words[0].isNewChapter ? "3" : "0"}
+                // lineHeight={RFValue(38)}
                 // py={0.5}
                 style={isIos ? styles.customShadow : {}}
               >
@@ -89,11 +90,11 @@ const RenderWords: React.FC<any> = React.memo(
                       key={word.id}
                       id={word.id}
                       text={word.text}
-                      // color={found ? found.color : word.color} // if found get color from db, else get default
                       index={index}
                       lineNumber={word?.lineNumber}
                       pageNumber={line?.pageID}
                       chapterCode={word?.chapterCode}
+                      // color={found ? found.color : word.color} // if found get color from db, else get default
                     />
                   );
                 })}

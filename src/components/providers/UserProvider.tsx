@@ -21,12 +21,16 @@ const UserProvider = ({ children }) => {
             ...prevState,
             userToken: action.token,
             isLoading: false,
+            username: action.username,
+            userID: action.userID,
           };
         case ACTION_TYPES.LOGIN:
           return {
             ...prevState,
             isSignout: false,
             userToken: action.token,
+            username: action.username,
+            userID: action.userID,
             isSignedIn: true,
           };
         case ACTION_TYPES.REMOVE_TOKEN:
@@ -61,14 +65,21 @@ const UserProvider = ({ children }) => {
       }
 
       try {
-        let user = await axios.get("/api/users/me", {
+        let res = await axios.get("/api/users/me", {
           headers: {
             Authorization: `Bearer ${userToken}`,
           },
         });
+        let user = res.data;
         axios.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
+
         console.log("logged in");
-        dispatch({ type: ACTION_TYPES.CHECK_TOKEN, token: userToken });
+        dispatch({
+          type: ACTION_TYPES.CHECK_TOKEN,
+          token: userToken,
+          username: user.username,
+          userID: user.id,
+        });
       } catch (e: any) {
         dispatch({ type: ACTION_TYPES.REMOVE_TOKEN });
         console.log("not logged in", e.response.data);
@@ -80,19 +91,24 @@ const UserProvider = ({ children }) => {
     login: async (data: {
       accessToken: string;
       userID: number;
-      userName: string;
+      username: string;
     }) => {
-      console.log("setted token");
-
       await SecureStore.setItemAsync("userToken", data?.accessToken);
       axios.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${data?.accessToken}`;
 
-      dispatch({ type: ACTION_TYPES.LOGIN, token: data?.accessToken });
-      console.log(state.userToken);
+      dispatch({
+        type: ACTION_TYPES.LOGIN,
+        token: data?.accessToken,
+        username: data?.username,
+        userID: data?.userID,
+      });
     },
-    logout: () => dispatch({ type: ACTION_TYPES.REMOVE_TOKEN }),
+    logout: async () => {
+      await SecureStore.deleteItemAsync("userToken");
+      dispatch({ type: ACTION_TYPES.REMOVE_TOKEN });
+    },
     state: state,
   };
   return (
