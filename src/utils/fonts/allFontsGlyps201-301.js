@@ -99,4 +99,5 @@ export const fonts201_301 = {
   p298: require("../../assets/fonts/p298.ttf"),
   p299: require("../../assets/fonts/p299.ttf"),
   p300: require("../../assets/fonts/p300.ttf"),
+  p301: require("../../assets/fonts/p301.ttf"),
 };

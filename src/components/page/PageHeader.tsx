@@ -14,13 +14,13 @@ const PageHeader: React.FC<any> = React.memo(
   ({ data }: any) => {
     const navigation: any = useNavigation();
     const textColor = "#ae8f74";
-    let meta = data?.lines[0]?.words[0];
+    let meta = data;
     return (
       <SafeAreaView style={styles.droidSafeArea}>
         <HStack
           justifyContent={"space-between"}
           alignItems="center"
-          px={2}
+          px={2.5}
           // maxHeight="7"
         >
           <HStack flex={1} justifyContent="flex-start" alignItems={"center"}>

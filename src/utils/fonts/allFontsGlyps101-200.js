@@ -98,5 +98,5 @@ export const fonts101_200 = {
   p197: require("../../assets/fonts/p197.ttf"),
   p198: require("../../assets/fonts/p198.ttf"),
   p199: require("../../assets/fonts/p199.ttf"),
-  p200: require("../../assets/fonts/p199.ttf"),
+  p200: require("../../assets/fonts/p200.ttf"),
 };

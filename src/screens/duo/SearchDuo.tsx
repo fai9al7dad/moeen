@@ -40,7 +40,7 @@ const SearchDuo = () => {
   const sendInvite = async (userID: number) => {
     try {
       let res = await axios.post("/api/duo/send-invite", {
-        reciter: userID.toString(),
+        toUserID: userID.toString(),
       });
       setToast({
         body: "تم ارسال طلب الإضافة بنجاح",
@@ -167,7 +167,7 @@ const SearchDuo = () => {
       {isError ? (
         <Box>
           <Text mt={5} textAlign="left" fontFamily={"montserrat"}>
-            حصل خطأ {error.message}
+            لا يوجد نتائج تطابق بحثك
           </Text>
         </Box>
       ) : null}

@@ -1,6 +1,6 @@
 import { Box, Text } from "native-base";
 import React, { useCallback, useEffect, useRef } from "react";
-import { Dimensions, Platform } from "react-native";
+import { ActivityIndicator, Dimensions, Platform } from "react-native";
 import { QuranDataContext } from "../contexts/QuranDataContext";
 import RenderList from "../components/page/ListRender";
 import { inject, observer } from "mobx-react";
@@ -12,20 +12,18 @@ import { mistakesColor } from "../assets/conts/mistakes";
 const Quran = ({ quran, route, store, navigation }) => {
   const listRef = useRef<any>(null);
   const { width, height } = Dimensions.get("window");
-  // useEffect(() => {
-  //   const initQuran = async () => {
-  //   };
-  //   initQuran();
-  // }, []);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const bootstrapCall = async () => {
       await quran.initDataProvider({ isClone: store.isWerd ? true : false });
       setTimeout(() => {
         // to fix later, beacuse list words dont update unitl out of window
         if (listRef?.current) {
-          listRef?.current?.scrollToIndex(8);
+          listRef?.current?.scrollToIndex(3);
           listRef.current.scrollToIndex(0);
         }
+        setLoading(false);
       }, 50);
     };
     bootstrapCall();
@@ -65,13 +63,17 @@ const Quran = ({ quran, route, store, navigation }) => {
       }, 50);
     }
   }, [route]);
-
+  if (loading) {
+    return (
+      <Box h={"100%"} justifyContent="center" alignItems={"center"}>
+        <ActivityIndicator />
+      </Box>
+    );
+  }
   return (
     <QuranDataContext.Provider value={value}>
       <Box flex={1}>
-        {quran.quranData.length > 5 ? (
-          <RenderList listRef={listRef} width={width} height={height} />
-        ) : null}
+        <RenderList listRef={listRef} width={width} height={height} />
       </Box>
     </QuranDataContext.Provider>
   );

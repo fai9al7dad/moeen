@@ -6,12 +6,22 @@ import RenderPage from "./RenderPage";
 import { inject, observer } from "mobx-react";
 import quran from "../../stores/Quran";
 import { quranArray } from "../../types/quran.types";
+import { Box, Text } from "native-base";
 
+const VIEW_TYPES = {
+  FULL: 0,
+  SEPERATOR: 1,
+};
 function RenderList({ store, listRef, width, height }: any) {
   const layoutProvider = useMemo(() => {
     return new LayoutProvider(
       (i) => {
         return 1;
+        // if (i % 2 === 0) {
+        //   return VIEW_TYPES.SEPERATOR;
+        // } else {
+        //   return VIEW_TYPES.FULL;
+        // }
       },
       (type, dim) => {
         switch (type) {
@@ -19,6 +29,10 @@ function RenderList({ store, listRef, width, height }: any) {
             dim.width = width;
             dim.height = height;
             break;
+          // case VIEW_TYPES.SEPERATOR:
+          //   dim.width = width * 0.2;
+          //   dim.height = height;
+          //   break;
         }
       }
     );
@@ -36,11 +50,11 @@ function RenderList({ store, listRef, width, height }: any) {
         snapToInterval={width}
         decelerationRate={0}
         disableIntervalMomentum
+        pagingEnabled
         scrollThrottle={16}
         showsHorizontalScrollIndicator={false}
         bounces={false}
-        renderAheadOffset={500}
-        // pagingEnabled
+        // renderAheadOffset={300}
         // onVisibleIndicesChanged={(i) => console.log(`i = ${i}`)}
         // disableRecycling
       />
@@ -50,7 +64,7 @@ function RenderList({ store, listRef, width, height }: any) {
 
 export default inject("store")(observer(RenderList));
 
-const RowRenderer = (_, data: quranArray) => {
+const RowRenderer = (types, data: quranArray) => {
   const { width, height } = Dimensions.get("window");
 
   return (

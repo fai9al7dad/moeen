@@ -4,15 +4,16 @@ import { mistakesColor } from "../../assets/conts/mistakes";
 import ActionButton from "../../components/general/ActionButton";
 import store from "../../stores/Store";
 import quran from "../../stores/Quran";
+import colorsModel from "../../utils/sqlite/model/colorsModel";
 
 const FinishWerd = ({ navigation }) => {
   const endWerd = async () => {
     // call finish werd from store
     // go back after finish
-    navigation.navigate("StartOrFinishWerdMeta", {
-      isStart: false,
-      werdID: store.werdID,
-    });
+    let colors = await colorsModel.getAllWords();
+    quran.fillWordsColorsMistakes(colors);
+    store.finishWerd();
+    navigation.replace("SelectDuo");
   };
   return (
     <Box h={"100%"} px={4} justifyContent="space-between">

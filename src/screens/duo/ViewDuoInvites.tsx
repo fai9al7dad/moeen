@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import EmptyList from "../../components/svg/EmptyList";
 import { errorInterface } from "../auth/Register";
 import ToastAlert from "../../components/general/ToastAlert";
+import ActionButton from "../../components/general/ActionButton";
 
 const ViewDuoInvites = ({ jumpTo }) => {
   const navigation: any = useNavigation();
@@ -17,16 +18,18 @@ const ViewDuoInvites = ({ jumpTo }) => {
     fetchDuoInvites,
     { retry: 0 }
   );
+  const [refreshing, setRefreshing] = useState(false);
 
   const [toast, setToast] = useState<errorInterface | null>(null);
   const queryClient = useQueryClient();
   const acceptOrRejectInviteMutation = useMutation(async (data: any) => {
     try {
       let res = await axios.post(`/api/duo/${data.type}-invite`, {
-        corrector: data.id.toString(),
+        fromUserID: data.fromUserID.toString(),
         isQuickAdd: false,
       });
-      queryClient.refetchQueries(["asReciter"]);
+
+      queryClient.refetchQueries(["allDuos"]);
 
       setToast({
         body:
@@ -39,7 +42,7 @@ const ViewDuoInvites = ({ jumpTo }) => {
       });
       return res.data;
     } catch (e: any) {
-      console.log("e", e.response.data);
+      console.log("e", e);
       // setToast({
       //   body: e.response.data,
       //   header: "حصل خطأ 😔",
@@ -69,27 +72,42 @@ const ViewDuoInvites = ({ jumpTo }) => {
 
   if (isError) {
     return (
-      <Box height={"100%"} justifyContent={"center"} alignItems="center">
-        <EmptyList />
-        <Box px={5}>
-          <Text
-            textAlign={"center"}
-            fontFamily="montserrat-bold"
-            color="gray.800"
-            fontSize={"2xl"}
-            mt={5}
-          >
-            {/* {error.message} */}
-          </Text>
-          <Text
-            textAlign={"center"}
-            fontFamily="montserrat"
-            color="gray.500"
-            fontSize={"md"}
-            mt={5}
-          >
-            ستتحدث القائمة مباشرة اذا تم إرسال إليك طلبات إضافة كمعلم
-          </Text>
+      <Box height={"100%"} justifyContent={"space-between"} alignItems="center">
+        <Box mt={20}>
+          <EmptyList />
+          <Box px={5}>
+            <Text
+              textAlign={"center"}
+              fontFamily="montserrat-bold"
+              color="gray.800"
+              fontSize={"2xl"}
+              mt={5}
+            >
+              {/* {error.message} */}
+            </Text>
+            <Text
+              textAlign={"center"}
+              fontFamily="montserrat"
+              color="gray.500"
+              fontSize={"md"}
+              mt={5}
+            >
+              ستتحدث القائمة مباشرة اذا تم إرسال إليك طلبات إضافة
+            </Text>
+          </Box>
+        </Box>
+
+        <Box
+          mb={16}
+          width={"100%"}
+          alignItems="center"
+          justifyContent={"center"}
+        >
+          <ActionButton
+            text="إضافة صديق"
+            onPress={() => navigation.navigate("SearchDuo")}
+            style={{ width: "90%" }}
+          />
         </Box>
       </Box>
     );
@@ -99,7 +117,7 @@ const ViewDuoInvites = ({ jumpTo }) => {
 
     return (
       <Box
-        key={item.corrector.id}
+        key={item.id}
         height={item_height}
         px={5}
         pt={2}
@@ -126,7 +144,7 @@ const ViewDuoInvites = ({ jumpTo }) => {
               color={"gray.800"}
               textAlign="left"
             >
-              {item.corrector.username}
+              {item.firstUser.username}
             </Text>
             <Text
               fontFamily={"montserrat"}
@@ -134,7 +152,7 @@ const ViewDuoInvites = ({ jumpTo }) => {
               color={"gray.400"}
               textAlign="left"
             >
-              رقم المعرف: {item.corrector.id}
+              رقم المعرف: {item.firstUser.id}
             </Text>
           </Box>
         </Box>
@@ -153,7 +171,7 @@ const ViewDuoInvites = ({ jumpTo }) => {
             alignItems={"center"}
             onPress={() =>
               acceptOrRejectInviteMutation.mutate({
-                id: item.corrector.id,
+                fromUserID: item.firstUser.id,
                 type: "accept",
               })
             }
@@ -170,7 +188,7 @@ const ViewDuoInvites = ({ jumpTo }) => {
             alignItems={"center"}
             onPress={() =>
               acceptOrRejectInviteMutation.mutate({
-                id: item.corrector.id,
+                fromUserID: item.firstUser.id,
                 type: "reject",
               })
             }
@@ -193,17 +211,30 @@ const ViewDuoInvites = ({ jumpTo }) => {
         />
       ) : null}
       <FlatList
-        keyExtractor={(item) => item.corrector.id.toString()}
+        keyExtractor={(item) => item.id.toString()}
         data={data}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
         ItemSeparatorComponent={renderSeperator}
+        onRefresh={async () => {
+          setRefreshing(true);
+          await queryClient.refetchQueries(["duoInvites"]);
+          setRefreshing(false);
+        }}
+        refreshing={refreshing}
         contentContainerStyle={{
           backgroundColor: "#FFFCF7",
           width: width * 0.9,
           borderRadius: 10,
         }}
       />
+      <Box mb={10} width={"100%"} alignItems="center" justifyContent={"center"}>
+        <ActionButton
+          text="إضافة صديق"
+          onPress={() => navigation.navigate("SearchDuo")}
+          style={{ width: "90%" }}
+        />
+      </Box>
     </Box>
   );
 };

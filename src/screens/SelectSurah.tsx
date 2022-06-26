@@ -15,7 +15,6 @@ const SelectSurah = ({ navigation }) => {
   };
   useEffect(() => {
     const get = async () => {
-      let promisesLoaded = [];
       for (let i = 0; i < SURAHS.chapters.length; i++) {
         // to start chapter from 1
         let chapterIndex = i + 1;

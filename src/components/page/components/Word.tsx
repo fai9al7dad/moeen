@@ -10,39 +10,42 @@ import store from "../../../stores/Store";
 import { Dimensions, Platform, StyleSheet } from "react-native";
 import { RFValue } from "../../../utils/RFValue";
 import colorsModel from "../../../utils/sqlite/model/colorsModel";
+import axios from "axios";
+import { UserContext } from "../../providers";
 
 interface props {
-  // color: string;
+  color: string;
   text: string;
   id: number;
   index: number;
   lineNumber: number;
   pageNumber: number;
-  isStartOfLine: boolean;
   chapterCode: string;
+  verseNumber: number;
 }
 const Word: React.FC<props> = React.memo(
   ({
-    // color,
+    color,
     text,
     id,
     index,
     pageNumber,
     lineNumber,
-    isStartOfLine,
     chapterCode,
+    verseNumber,
   }) => {
-    let found;
-    if (!store.isWerd) {
-      found = quran.wordsColorsMistakes.find((e: any) => e.wordID === id);
-    }
-    const [wordColor, setWordColor] = useState(
-      found?.color ? found?.color : "black"
+    let found: any = quran.wordsColorsMistakes.find(
+      (e: any) => e.wordID === id
     );
+    const [wordColor, setWordColor] = useState(
+      found?.color ? found.color : color
+    );
+
     const [showToolTip, setShowToolTip] = useState(false);
     const [showStagger, setShowStagger] = useState(false);
     const highlightWord = async (wordID: number) => {
       // haptics feedback
+      // return;
 
       selectionAsync();
       if (wordColor !== mistakesColor.mistake) {
@@ -57,6 +60,7 @@ const Word: React.FC<props> = React.memo(
         }, 1200);
       }
       let newColor;
+
       switch (wordColor) {
         case mistakesColor.default:
           newColor = mistakesColor.warning;
@@ -68,6 +72,7 @@ const Word: React.FC<props> = React.memo(
             lineNumber,
             newColor
           );
+
           if (store.isWerd) {
             store.updateMistakesOrWarningsCounter("warning", wordID);
           }
@@ -96,7 +101,6 @@ const Word: React.FC<props> = React.memo(
             wordID,
             index,
             lineNumber,
-
             newColor
           );
 
@@ -105,8 +109,9 @@ const Word: React.FC<props> = React.memo(
           }
           break;
       }
-      // dont know if required, just thought it will optimize performance
-      setTimeout(() => {
+      setWordColor(newColor);
+      // dont know if timeout required, just thought it will optimize performance
+      setTimeout(async () => {
         if (!store.isWerd) {
           // updateWordColor(newColor, wordID);
           colorsModel.insertColor({
@@ -114,10 +119,10 @@ const Word: React.FC<props> = React.memo(
             color: newColor,
             chapterCode: chapterCode,
             pageNumber: pageNumber,
+            verseNumber: verseNumber,
           });
         }
       }, 500);
-      setWordColor(newColor);
     };
 
     return (
@@ -127,86 +132,76 @@ const Word: React.FC<props> = React.memo(
           onPress={() => highlightWord(id)}
           suppressHighlighting
           zIndex={1}
-          // lineHeight={RFValue(39.5)}
         >
           {text}
         </Text>
         {showStagger ? (
-          <Box>
-            {/* required or else stagger wont render */}
-            {Platform.OS === "android" ? <Text fontSize={0.01}>s</Text> : null}
-
-            <Stagger
-              visible={showToolTip}
-              initial={{
-                opacity: 0,
-                scale: 0,
-                translateY: 10,
-              }}
-              animate={{
-                translateY: 0,
-                translateX: Platform.OS === "android" ? 30 : 0,
-                scale: 1,
-                opacity: 1,
-                transition: {
-                  type: "spring",
-                  mass: 0.2,
-                  stagger: {
-                    offset: 5,
-                    reverse: true,
-                  },
+          <Stagger
+            visible={showToolTip}
+            initial={{
+              opacity: 0,
+              scale: 0,
+              translateY: 10,
+            }}
+            animate={{
+              translateY: 0,
+              translateX: Platform.OS === "android" ? 30 : 0,
+              scale: 1,
+              opacity: 1,
+              transition: {
+                type: "spring",
+                mass: 0.2,
+                stagger: {
+                  offset: 5,
+                  // reverse: true,
                 },
-              }}
-              exit={{
-                translateY: 34,
-                scale: 0.5,
-                opacity: 0,
-                transition: {
-                  duration: 100,
-                  stagger: {
-                    offset: 30,
-                    reverse: true,
-                  },
+              },
+            }}
+            exit={{
+              translateY: 34,
+              scale: 0.5,
+              opacity: 0,
+              transition: {
+                duration: 100,
+                stagger: {
+                  offset: 30,
+                  // reverse: true,
                 },
-              }}
+              },
+            }}
+          >
+            <Box
+              bg={
+                wordColor === mistakesColor.warning ? "amber.500" : "danger.500"
+              }
+              width={12}
+              flex={1}
+              zIndex={999}
+              height={7}
+              position="absolute"
+              justifyContent="center"
+              alignItems="center"
+              rounded="sm"
+              borderWidth={1}
+              borderColor={
+                wordColor === mistakesColor.warning ? "amber.400" : "danger.400"
+              }
+              right={0}
+              top={-55}
             >
-              <Box
-                bg={
+              <Text
+                fontSize="10"
+                fontFamily={"montserrat-bold"}
+                color={
                   wordColor === mistakesColor.warning
-                    ? "amber.500"
-                    : "danger.500"
+                    ? "amber.200"
+                    : "danger.200"
                 }
-                width={12}
-                flex={1}
-                zIndex={999}
-                height={7}
-                position="absolute"
-                justifyContent="center"
-                alignItems="center"
-                rounded="sm"
-                borderWidth={1}
-                borderColor={
-                  wordColor === mistakesColor.warning
-                    ? "amber.400"
-                    : "danger.400"
-                }
-                left={-40}
-                top={-60}
               >
-                <Text
-                  fontSize="10"
-                  fontFamily={"montserrat-bold"}
-                  color={
-                    wordColor === mistakesColor.warning
-                      ? "amber.200"
-                      : "danger.200"
-                  }
-                >
-                  {wordColor === mistakesColor.warning ? "تنبيه" : "خطأ"}
-                </Text>
-              </Box>
-            </Stagger>
-          </Box>
+                {wordColor === mistakesColor.warning ? "تنبيه" : "خطأ"}
+              </Text>
+            </Box>
+          </Stagger>
         ) : null}
       </>
     );

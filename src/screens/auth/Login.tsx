@@ -126,6 +126,17 @@ const Login = ({ navigation }) => {
                 كلمة المرور مطلوبه
               </Text>
             )}
+            <Pressable onPress={() => navigation.navigate("ForgotPassword")}>
+              <Text
+                fontSize={"xs"}
+                textAlign="left"
+                fontFamily={"montserrat"}
+                color="gray.800"
+              >
+                نسيت كلمة المرور؟{" "}
+                <Text color="tertiary.500">اضغط هنا للإستعادة </Text>
+              </Text>
+            </Pressable>
             <ActionButton text="ادخل" onPress={handleSubmit(onSubmit)} />
 
             <Pressable onPress={() => navigation.navigate("Register")}>

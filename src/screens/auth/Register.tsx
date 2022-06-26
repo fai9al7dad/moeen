@@ -168,6 +168,14 @@ const Register = ({ navigation }) => {
                 },
               }}
             />
+            <Text
+              textAlign={"left"}
+              fontSize="xs"
+              fontFamily="montserrat"
+              color="gray.400"
+            >
+              تحتاج الإيميل في حال نسيت كلمة المرور
+            </Text>
             {errors.email && (
               <Text
                 color="red.400"

@@ -4,6 +4,7 @@ import { QuranDataContext } from "../../contexts/QuranDataContext";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { quranRow } from "../../types/quran.types";
+import { arabicNumToEnglish } from "../../utils/arabicNumToEnglish";
 interface props {
   data: quranRow;
   textColor: string;
@@ -22,7 +23,13 @@ const SelectPageNumber: React.FC<props> = React.memo(
         setIsInvalid(true);
       }
     }, [pageNumber]);
-    const handleChange = useCallback((val) => setPageNumber(val), [pageNumber]);
+    const handleChange = useCallback(
+      (val) => {
+        let conv = arabicNumToEnglish(val);
+        setPageNumber(conv);
+      },
+      [pageNumber]
+    );
 
     return (
       <Pressable
@@ -98,6 +105,7 @@ const SelectPageNumber: React.FC<props> = React.memo(
                 </Button>
                 <Button
                   disabled={isInvalid}
+                  bg="tertiary.600"
                   onPress={() => {
                     scrollFunc(pageNumber - 1);
                     setShowPageSelectorModal(false);

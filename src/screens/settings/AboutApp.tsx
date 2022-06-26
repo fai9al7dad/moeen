@@ -1,12 +1,19 @@
-import { Box, Text } from "native-base";
+import { Box, Image, Text } from "native-base";
 import React from "react";
 import { Dimensions } from "react-native";
-
+import logo from "../../assets/img/logo.png";
 const AboutApp = () => {
   const { width } = Dimensions.get("window");
 
   return (
     <Box mt={5} alignItems="center" justifyContent="center">
+      <Image
+        source={logo}
+        style={{ width: 100, height: 100 }}
+        rounded="lg"
+        alt="logo"
+        mb={1}
+      />
       <Text fontFamily={"montserrat"} textAlign="center" mb={5} color="#ae8f74">
         الإصدار 1.0.0
       </Text>

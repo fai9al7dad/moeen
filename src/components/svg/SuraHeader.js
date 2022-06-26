@@ -28,13 +28,13 @@ const SuraHeader = ({ chapterCode }) => {
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width * 0.99}
+      width={"100%"}
       height={customHeight}
       viewBox="0 0 465.768 50.549"
       style={{ position: "relative" }}
     >
       <Box
-        width={width * 0.99}
+        width={"100%"}
         height={customHeight}
         justifyContent={"center"}
         alignItems="center"

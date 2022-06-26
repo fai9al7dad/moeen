@@ -1,5 +1,5 @@
 import { Dimensions, FlatList } from "react-native";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useQuery } from "react-query";
 import axios from "axios";
 import ActionButton from "../../components/general/ActionButton";
@@ -8,9 +8,15 @@ import EmptyList from "../../components/svg/EmptyList";
 import store from "../../stores/Store";
 import ListItem from "../../components/selectDuo/atom/ListItem";
 import { WerdDataContext } from "../../contexts/WerdDataContext";
+import colorsModel from "../../utils/sqlite/model/colorsModel";
+import { mistakesColor } from "../../assets/conts/mistakes";
+import quran from "../../stores/Quran";
+import { UserContext } from "../../components/providers";
 
 const ViewWirds = ({ route, navigation }) => {
-  const { duoID, username, type } = route.params;
+  const { duoID, username, reciterID } = route.params;
+  const { state } = useContext(UserContext);
+
   const { width } = Dimensions.get("window");
   // useEffect(() => {
   //   navigation.setOptions({ headerTitle: `${username} ` });
@@ -19,6 +25,7 @@ const ViewWirds = ({ route, navigation }) => {
   const fetchWirds = React.useCallback(async () => {
     try {
       let res = await axios.get(`/api/werd/duo-id/${duoID}`);
+      let data = res.data;
 
       return res.data;
     } catch (e: any) {
@@ -64,23 +71,27 @@ const ViewWirds = ({ route, navigation }) => {
           <Text fontFamily={"montserrat-bold"} color="tertiary.600">
             {username}
           </Text>{" "}
-          {type === "asCorrector" ? "كمعلم" : "كطالب"}
         </Text>
-        {type === "asCorrector" ? (
-          <ActionButton
-            text="بدء ورد جديد"
-            onPress={() => startWird(duoID, username, navigation)}
-            style={{
-              width: "90%",
-              marginTop: 80,
-            }}
-          />
-        ) : null}
+        <ActionButton
+          text="بدء ورد جديد"
+          onPress={() => startWird(duoID, username, navigation, reciterID)}
+          style={{
+            width: "90%",
+            marginTop: 80,
+          }}
+        />
       </Box>
     );
   }
 
   const renderItem = ({ item, index }) => {
+    let type;
+    if (state.userID === item.reciterID) {
+      type = "asReciter";
+    } else {
+      type = "asCorrector";
+    }
+
     let createdAtD = new Date(item.createdAt);
     let createdAtDate =
       createdAtD.getFullYear() +
@@ -138,40 +149,63 @@ const ViewWirds = ({ route, navigation }) => {
           borderRadius: 10,
         }}
       />
-      {type === "asCorrector" ? (
-        <Box
-          mb={10}
-          width={"100%"}
-          alignItems="center"
-          justifyContent={"center"}
-        >
-          <ActionButton
-            text="بدء ورد جديد"
-            onPress={() => startWird(duoID, username, navigation)}
-            style={{
-              width: "90%",
-            }}
-          />
-        </Box>
-      ) : null}
+      <Box mb={10} width={"100%"} alignItems="center" justifyContent={"center"}>
+        <ActionButton
+          text="بدء ورد جديد"
+          onPress={() => startWird(duoID, username, navigation, reciterID)}
+          style={{
+            width: "90%",
+          }}
+        />
+      </Box>
     </Box>
   );
 };
 
 export default ViewWirds;
 
-const startWird = async (duoID: number, username: string, navigation: any) => {
+const startWird = async (
+  duoID: number,
+  username: string,
+  navigation: any,
+  reciterID: number
+) => {
   try {
     // create werd
-    let res = await axios.post("/api/werd/add", { duoID: duoID.toString() });
+    let res = await axios.post("/api/werd/add", {
+      duoID: duoID.toString(),
+      reciterID: reciterID,
+    });
     let werd = res.data;
     // store werd id
-    navigation.navigate("StartOrFinishWerdMeta", {
-      isStart: true,
-      werdID: werd?.id,
-      username: username,
-      duoID: duoID,
+    // navigation.navigate("StartOrFinishWerdMeta", {
+    //   isStart: true,
+    //   werdID: werd?.id,
+    //   username: username,
+    //   duoID: duoID,
+    // });
+    // console.log(color);
+
+    let highlightsRes = await axios.get(`/api/highlight/user-id/${reciterID}`);
+    let highlightsData = highlightsRes.data;
+
+    let arr: any = [];
+    highlightsData.map((item) => {
+      let color;
+      switch (item.type) {
+        case "warning":
+          color = mistakesColor.warning;
+          break;
+        case "mistake":
+          color = mistakesColor.mistake;
+          break;
+      }
+      arr.push({ color: color, wordID: item.wordID });
     });
+    await quran.fillWordsColorsMistakes(arr);
+
+    store.startWerd(werd.id, duoID, username);
+    navigation.navigate("Quran");
   } catch (e: any) {
     console.log(e.response.data);
   }

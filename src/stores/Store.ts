@@ -10,8 +10,9 @@ class Store {
   username = "";
   mistakesCounter = 0;
   warningsCounter = 0;
+  revertCounter = 0;
   counter = 0;
-
+  showOnBoarding = false;
   //computed
   constructor() {
     makeObservable(this, {
@@ -19,11 +20,13 @@ class Store {
       werdID: observable,
       currentWerdID: observable,
       duoID: observable,
+      showOnBoarding: observable,
       username: observable,
       mistakesCounter: observable,
       warningsCounter: observable,
       startWerd: action,
       finishWerd: action,
+      updateOnBoarding: action,
       updateMistakesOrWarningsCounter: action,
     });
   }
@@ -52,7 +55,7 @@ class Store {
         this.mistakesCounter++;
         break;
       case "revert":
-        this.mistakesCounter--;
+        this.mistakesCounter === 0 ? 0 : this.mistakesCounter--; // else will show as minus
     }
     let payload = {
       wordID: wordID.toString(),
@@ -66,6 +69,14 @@ class Store {
         console.log(e.response.data);
       }
     }, 2000);
+  }
+  updateOnBoarding({ status }) {
+    if (status === "seen") {
+      this.showOnBoarding = false;
+    }
+    if (status === "notSeen") {
+      this.showOnBoarding = true;
+    }
   }
 }
 const store = new Store();

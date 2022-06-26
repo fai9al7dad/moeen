@@ -1,28 +1,32 @@
-export interface Ayah {
-  number: number;
-  text: string;
-  numberInSurah: number;
+export interface WordType {
+  id: number;
+  color: string;
+  text?: any;
+  lineID: number;
+  lineNumber: number;
+  audioUrl?: any;
+  chapterCode: string;
+  isNewChapter: boolean;
+  isBismillah?: any;
+  transliteration?: any;
+  charType?: any;
+  verseNumber?: any;
+}
+
+export interface LineType {
+  id: number;
+  pageID: number;
+  words: WordType[];
+}
+
+export interface PageType {
+  id: number;
+  pageNumber: number;
+  chapterCode: string;
+  hizbNumber: number;
   juz: number;
-  manzil: number;
-  page: number;
-  ruku: number;
-  hizbQuarter: number;
-  sajda: boolean;
+  lines: LineType[];
 }
-
-export interface Surah {
-  number: number;
-  name: string;
-  englishName: string;
-  englishNameTranslation: string;
-  revelationType: string;
-  ayahs: Ayah[];
-}
-
-export interface Quran {
-  surahs: Surah[];
-}
-
 export type RootStackParamList = {
   Quran: undefined;
   SelectSurah: undefined;

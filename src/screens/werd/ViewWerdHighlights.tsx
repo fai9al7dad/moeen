@@ -14,6 +14,8 @@ import ActionButton from "../../components/general/ActionButton";
 import { updateWordColor } from "../../utils/sqlite/updateWordColor";
 import { MaterialIcons } from "@expo/vector-icons";
 import { inject, observer } from "mobx-react";
+import colorsModel from "../../utils/sqlite/model/colorsModel";
+import quran from "../../stores/Quran";
 
 const ViewWerdHighlights = ({ store, route, navigation }) => {
   const {
@@ -38,9 +40,12 @@ const ViewWerdHighlights = ({ store, route, navigation }) => {
   const fetchWerdHighlight = React.useCallback(async () => {
     try {
       let res = await axios.get(`/api/highlight/werd-id/${werdID}`);
+
       let data = res.data;
+
       for (let i = 0; i < data?.length; i++) {
         const word: quranRow = await getWordByID(data[i].wordID);
+        // console.log(word);
         data[i].verseNumber = word.verseNumber;
         data[i].text = word.text;
         data[i].chapterCode = word.chapterCode;
@@ -63,13 +68,22 @@ const ViewWerdHighlights = ({ store, route, navigation }) => {
   const acceptHighlights = async () => {
     for (let i = 0; i < data?.length; i++) {
       let color = mistakesColor[data[i].type];
-      await updateWordColor(color, data[i].wordID);
+      await colorsModel.insertColor({
+        color: color,
+        wordID: data[i].wordID,
+        chapterCode: data[i].chapterCode,
+        pageNumber: data[i].pageNumber,
+        verseNumber: data[i].verseNumber,
+      });
     }
 
     try {
       await axios.post("/api/werd/accept-werd", {
         werdID: werdID.toString(),
       });
+      let colors = await colorsModel.getAllWords();
+      quran.fillWordsColorsMistakes(colors);
+      quran.initDataProvider({ isClone: false });
       queryClient.refetchQueries("viewWirds");
       setIsAccepted(true);
     } catch (e: any) {
@@ -182,6 +196,19 @@ const ViewWerdHighlights = ({ store, route, navigation }) => {
   );
 };
 const renderItem = ({ item, index }) => {
+  let color;
+
+  switch (item.type) {
+    case "warning":
+      color = mistakesColor.warning;
+      break;
+    case "mistake":
+      color = mistakesColor.mistake;
+      break;
+    case "revert":
+      color = mistakesColor.default;
+      break;
+  }
   return (
     <Box
       key={item.id}
@@ -209,11 +236,7 @@ const renderItem = ({ item, index }) => {
         <Box justifyContent={"space-between"} h={item_height} py={3}>
           <Box flexDirection={"row"} alignItems="center">
             <Box
-              backgroundColor={
-                item.type == "mistake"
-                  ? mistakesColor.mistake
-                  : mistakesColor.warning
-              }
+              backgroundColor={color}
               width="2"
               height="2"
               mr="2"

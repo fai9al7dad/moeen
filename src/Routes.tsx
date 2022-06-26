@@ -18,26 +18,52 @@ import { Button } from "react-native";
 import { Pressable } from "native-base";
 import { Settings } from "./screens/settings";
 import AboutApp from "./screens/settings/AboutApp";
+import Intro from "./screens/onBoardings/Intro";
 // <RootStackParamList>
+import * as SecureStore from "expo-secure-store";
+import store from "./stores/Store";
+import { inject, observer } from "mobx-react";
+import ForgotPassword from "./screens/auth/ForgotPassword";
+
 const Stack = createNativeStackNavigator();
 
-const HomeStack = () => {
+const HomeStack = observer(() => {
   // const fadeNavigation = ({ current }) => ({
   //   cardStyle: {
   //     opacity: current.progress,
   //   },
   // });
+  React.useEffect(() => {
+    const boot = async () => {
+      let val = await SecureStore.getItemAsync("finishedOnBoarding");
+      if (val !== null) {
+        store.updateOnBoarding({ status: "seen" });
+      } else {
+        store.updateOnBoarding({ status: "notSeen" });
+      }
+    };
+    boot();
+  }, []);
   return (
     <Stack.Navigator
       screenOptions={{
         contentStyle: { backgroundColor: "#fff8ed" },
       }}
     >
-      <Stack.Screen
-        name="Quran"
-        component={Quran}
-        options={{ headerShown: false }}
-      />
+      {store.showOnBoarding ? (
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="intro"
+          component={Intro}
+        />
+      ) : (
+        <Stack.Screen
+          name="Quran"
+          component={Quran}
+          options={{ headerShown: false }}
+        />
+      )}
+
       <Stack.Screen
         name="SelectSurah"
         component={SelectSurah}
@@ -187,6 +213,7 @@ const HomeStack = () => {
         name="SearchDuo"
         component={SearchDuo}
       />
+      {/* auth */}
       <Stack.Screen
         name="Login"
         component={Login}
@@ -194,9 +221,26 @@ const HomeStack = () => {
           contentStyle: { backgroundColor: "#fff8ed" },
           headerStyle: { backgroundColor: "#fff8ed" },
           headerTitleStyle: { fontFamily: "montserrat" },
+          headerBackTitle: "الثنائيات",
+          headerBackTitleStyle: { fontFamily: "montserrat" },
+
           headerTitle: "تسجيل دخول",
           headerTintColor: "#000",
         }}
+      />
+      <Stack.Screen
+        options={{
+          contentStyle: { backgroundColor: "#fff8ed" },
+          headerStyle: { backgroundColor: "#fff8ed" },
+          headerBackTitle: "دخول",
+          headerTitleStyle: { fontFamily: "montserrat" },
+          headerTitle: "استعادة كلمة المرور",
+          headerTintColor: "#000",
+          headerBackTitleStyle: { fontFamily: "montserrat" },
+          // headerShown: false
+        }}
+        name="ForgotPassword"
+        component={ForgotPassword}
       />
       <Stack.Screen
         options={{
@@ -214,7 +258,7 @@ const HomeStack = () => {
       />
     </Stack.Navigator>
   );
-};
+});
 
 const Routes = () => {
   // const { state } = useContext(UserContext);

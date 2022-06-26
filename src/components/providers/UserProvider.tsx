@@ -71,9 +71,7 @@ const UserProvider = ({ children }) => {
           },
         });
         let user = res.data;
-        axios.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
 
-        console.log("logged in");
         dispatch({
           type: ACTION_TYPES.CHECK_TOKEN,
           token: userToken,
@@ -107,6 +105,7 @@ const UserProvider = ({ children }) => {
     },
     logout: async () => {
       await SecureStore.deleteItemAsync("userToken");
+      axios.defaults.headers.common["Authorization"] = "";
       dispatch({ type: ACTION_TYPES.REMOVE_TOKEN });
     },
     state: state,

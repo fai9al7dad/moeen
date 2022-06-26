@@ -1,7 +1,7 @@
 export const fonts1_100 = {
-  surahname: require("../../assets/fonts/surahNames.ttf"),
   "montserrat-bold": require("../../assets/fonts/Montserrat-Arabic-Bold.otf"),
   montserrat: require("../../assets/fonts/Montserrat-Arabic-Regular.otf"),
+  surahname: require("../../assets/fonts/surahNames.ttf"),
   p1: require("../../assets/fonts/p1.ttf"),
   p2: require("../../assets/fonts/p2.ttf"),
   p3: require("../../assets/fonts/p3.ttf"),
