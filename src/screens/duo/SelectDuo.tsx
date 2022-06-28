@@ -68,45 +68,6 @@ export const SelectDuo = ({ navigation }) => {
     return <NotAuthAlert />;
   }
 
-  if (state.userToken && isOnline) {
-    // check if user logged in and is oneline
-    // if all true
-    // check if any new colors added to tempColors
-    // iff new send request with loop to online endpoint (semi sync)
-    // clear tempColors table
-    const checkTempColorsModel = async () => {
-      const tempColors: any = await tempColorsModel.getAllWords();
-      console.log({ newColors: tempColors });
-      console.log({ newColors: tempColors?.length });
-      if (tempColors?.length > 0) {
-        let requests: any = [];
-        for (let i = 0; i < tempColors.length; i++) {
-          let type;
-          switch (tempColors[i].color) {
-            case mistakesColor.default:
-              type = "revert";
-              break;
-            case mistakesColor.warning:
-              type = "warning";
-              break;
-            case mistakesColor.mistake:
-              type = "mistake";
-              break;
-          }
-          requests[i] = axios.post("/api/highlight/add", {
-            type: type,
-            wordID: tempColors[i].wordID,
-          });
-        }
-
-        Promise.all(requests).then(async (res) => {
-          await tempColorsModel.deleteAllColors();
-        });
-      }
-    };
-    checkTempColorsModel();
-  }
-
   const renderTabBar = (props) => (
     <TabBar
       {...props}

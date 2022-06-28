@@ -83,6 +83,7 @@ export class ColorsModel {
     chapterCode,
     pageNumber,
     verseNumber,
+    sendRequest,
   }: insertColorDto) {
     // checks for word in table
     // if exist update it, else insert color
@@ -134,48 +135,52 @@ export class ColorsModel {
       });
 
       // online
-      try {
-        switch (color) {
-          case mistakesColor.default:
-            await axios.post("/api/highlight/add", {
-              type: "revert",
-              wordID: wordID,
-            });
+      if (sendRequest) {
+        console.log("sending request");
 
-            break;
-          case mistakesColor.warning:
-            await axios.post("/api/highlight/add", {
-              type: "warning",
-              wordID: wordID,
-            });
-            break;
-          case mistakesColor.mistake:
-            await axios.post("/api/highlight/add", {
-              type: "mistake",
-              wordID: wordID,
-            });
-            break;
+        try {
+          switch (color) {
+            case mistakesColor.default:
+              await axios.post("/api/highlight/add", {
+                type: "revert",
+                wordID: wordID,
+              });
+
+              break;
+            case mistakesColor.warning:
+              await axios.post("/api/highlight/add", {
+                type: "warning",
+                wordID: wordID,
+              });
+              break;
+            case mistakesColor.mistake:
+              await axios.post("/api/highlight/add", {
+                type: "mistake",
+                wordID: wordID,
+              });
+              break;
+          }
+        } catch (e: any) {
+          console.log(
+            "error from highlight/add endpoint... adding to temp colors ",
+            e.response.data
+          );
+          // To test
+          // Try to add without internet
+          // then check tempColors
+          // ------------
+          // Try to add with internet, but logged off
+          // then check tempColors
+          // ------------
+          // what should be added here is every request that doesnot have a token.. either no network request, or network but not logged in
+          tempColorsModel.insertColor({
+            wordID: wordID,
+            color: color,
+            chapterCode: chapterCode,
+            pageNumber: pageNumber,
+            verseNumber: verseNumber,
+          });
         }
-      } catch (e: any) {
-        console.log(
-          "error from highlight/add endpoint... adding to temp colors ",
-          e.response.data
-        );
-        // To test
-        // Try to add without internet
-        // then check tempColors
-        // ------------
-        // Try to add with internet, but logged off
-        // then check tempColors
-        // ------------
-        // what should be added here is every request that doesnot have a token.. either no network request, or network but not logged in
-        tempColorsModel.insertColor({
-          wordID: wordID,
-          color: color,
-          chapterCode: chapterCode,
-          pageNumber: pageNumber,
-          verseNumber: verseNumber,
-        });
       }
     });
   }

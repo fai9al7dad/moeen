@@ -30,8 +30,8 @@ const App = React.memo(() => {
   axios.defaults.headers.post["Content-Type"] = "application/json";
   axios.defaults.headers.post["Accept"] = "application/json";
   axios.defaults.withCredentials = true;
-  axios.defaults.baseURL = "http://moeen-api.herokuapp.com";
-  // axios.defaults.baseURL = "http://192.168.1.51:8000";
+  // axios.defaults.baseURL = "http://moeen-api.herokuapp.com";
+  axios.defaults.baseURL = "http://192.168.1.51:3000";
   // let [fontsLoaded] = useFonts(fonts);
   const { width, height } = Dimensions.get("window");
   const [appIsReady, setAppIsReady] = useState(false);

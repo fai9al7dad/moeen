@@ -1,20 +1,16 @@
 export interface quranRow {
-  chapterCode: number;
   audioUrl: string;
+  chapterCode: string;
   charType: string;
   color: string;
-  hizbNumber: number;
+  id: number;
   isBismillah?: any;
   isNewChapter: number;
-  juzNumber: number;
+  lineID: number;
   lineNumber: number;
-  pageID: number;
-  pageNumber: number;
-  rubNumber: number;
   text: string;
   transliteration: string;
-  verseNumber: number;
-  wordID: number;
+  verseNumber: string;
 }
 
 export interface quranArray {

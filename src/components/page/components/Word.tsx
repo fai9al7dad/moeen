@@ -120,6 +120,7 @@ const Word: React.FC<props> = React.memo(
             chapterCode: chapterCode,
             pageNumber: pageNumber,
             verseNumber: verseNumber,
+            sendRequest: true,
           });
         }
       }, 500);

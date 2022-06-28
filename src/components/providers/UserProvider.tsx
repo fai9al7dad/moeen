@@ -71,7 +71,7 @@ const UserProvider = ({ children }) => {
           },
         });
         let user = res.data;
-
+        axios.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
         dispatch({
           type: ACTION_TYPES.CHECK_TOKEN,
           token: userToken,

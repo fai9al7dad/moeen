@@ -4,6 +4,7 @@ export interface insertColorDto {
   chapterCode: string;
   pageNumber: number;
   verseNumber: number;
+  sendRequest: boolean;
 }
 
 export interface deleteColorDto {

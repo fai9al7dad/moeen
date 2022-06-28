@@ -13,13 +13,24 @@ import ListItem from "./atom/ListItem";
 const AllDuos = () => {
   const navigation: any = useNavigation();
   const { width } = Dimensions.get("window");
+
+  const fetchAllDuos = async () => {
+    try {
+      let res = await axios.get("/api/duo/all-duos");
+
+      return res.data;
+    } catch (e: any) {
+      if (e.response.status === 404) {
+        throw new Error("لا يوجد لديك ثنائيات");
+      }
+    }
+  };
+
   const { isError, data, error, isFetching }: any = useQuery(
     "allDuos",
-    fetchAllDuos,
-    { retry: 0 }
+    fetchAllDuos
+    // { retry: 0 }
   );
-  let fetchedDataType =
-    data?.type === 1 ? data?.asFirstUser : data?.asSecondUser;
 
   if (isFetching) {
     return (
@@ -55,25 +66,19 @@ const AllDuos = () => {
   }
 
   const renderItem = ({ item, index }) => {
-    let payload;
-    if (item.firstUser) {
-      payload = { ...item.firstUser };
-    } else {
-      payload = { ...item.secondUser };
-    }
     return (
       <ListItem
-        title={payload.username}
-        id={payload.id}
+        title={item.username}
+        id={item.id}
         itemHeight={item_height}
-        key={payload.id}
+        key={item.id}
         createdAtDate={item?.createdAt}
         index={index}
         onPress={() => {
           navigation.navigate("ViewWirds", {
             duoID: item.id,
-            username: payload.username,
-            reciterID: payload.id,
+            username: item.username,
+            reciterID: item.id,
           });
         }}
       />
@@ -84,7 +89,7 @@ const AllDuos = () => {
     <Box flex={1} alignItems="center" mt={5}>
       <FlatList
         keyExtractor={(item) => item.id.toString()}
-        data={fetchedDataType}
+        data={data}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
         ItemSeparatorComponent={renderSeperator}
@@ -110,16 +115,4 @@ const getItemLayout = (data, index) => {
     offset: item_height * index,
     index,
   };
-};
-
-const fetchAllDuos = async () => {
-  try {
-    let res = await axios.get("/api/duo/all-duos");
-
-    return res.data;
-  } catch (e: any) {
-    if (e.response.status === 404) {
-      throw new Error("لا يوجد لديك ثنائيات");
-    }
-  }
 };

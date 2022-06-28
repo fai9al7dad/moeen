@@ -16,6 +16,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { inject, observer } from "mobx-react";
 import colorsModel from "../../utils/sqlite/model/colorsModel";
 import quran from "../../stores/Quran";
+import { getTypeFromColor } from "../../utils/getTypeFromColor";
 
 const ViewWerdHighlights = ({ store, route, navigation }) => {
   const {
@@ -65,6 +66,7 @@ const ViewWerdHighlights = ({ store, route, navigation }) => {
     { retry: 0 }
   );
   const queryClient = useQueryClient();
+
   const acceptHighlights = async () => {
     for (let i = 0; i < data?.length; i++) {
       let color = mistakesColor[data[i].type];
@@ -74,6 +76,7 @@ const ViewWerdHighlights = ({ store, route, navigation }) => {
         chapterCode: data[i].chapterCode,
         pageNumber: data[i].pageNumber,
         verseNumber: data[i].verseNumber,
+        sendRequest: false,
       });
     }
 
@@ -88,8 +91,6 @@ const ViewWerdHighlights = ({ store, route, navigation }) => {
       setIsAccepted(true);
     } catch (e: any) {
       console.log("e", e.response.data);
-    } finally {
-      console.log("ss");
     }
   };
 
